@@ -73,3 +73,13 @@ Plugins/**/Intermediate/*
 
 # Cache files for the editor to use
 DerivedDataCache/*
+
+Plugins/Developer
+Platforms/HoloLens/Config/HoloLensEngine.ini
+Builds
+Config/steamvr_ue_editor_app.json
+Config/SteamVRBindings
+
+# IDE specific
+.idea
+.vsconfig
