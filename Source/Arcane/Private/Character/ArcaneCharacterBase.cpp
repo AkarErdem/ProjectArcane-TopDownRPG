@@ -1,5 +1,6 @@
 // Copyright (c) 2025 Erdem Akar
 
+
 #include "Character/ArcaneCharacterBase.h"
 
 AArcaneCharacterBase::AArcaneCharacterBase()
@@ -14,4 +15,5 @@ AArcaneCharacterBase::AArcaneCharacterBase()
 void AArcaneCharacterBase::BeginPlay()
 {
 	Super::BeginPlay();
+
 }

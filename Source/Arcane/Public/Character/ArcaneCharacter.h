@@ -6,12 +6,11 @@
 #include "Character/ArcaneCharacterBase.h"
 #include "ArcaneCharacter.generated.h"
 
-/**
- * 
- */
 UCLASS()
 class ARCANE_API AArcaneCharacter : public AArcaneCharacterBase
 {
 	GENERATED_BODY()
-	
+
+public:
+	AArcaneCharacter();
 };

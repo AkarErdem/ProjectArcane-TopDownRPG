@@ -6,9 +6,6 @@
 #include "Character/ArcaneCharacterBase.h"
 #include "ArcaneEnemy.generated.h"
 
-/**
- * 
- */
 UCLASS()
 class ARCANE_API AArcaneEnemy : public AArcaneCharacterBase
 {
