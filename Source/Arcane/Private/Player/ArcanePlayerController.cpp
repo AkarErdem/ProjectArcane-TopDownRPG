@@ -4,6 +4,7 @@
 #include "Player/ArcanePlayerController.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "Interaction/HighlightInterface.h"
 
 AArcanePlayerController::AArcanePlayerController()
 {
@@ -50,5 +51,60 @@ void AArcanePlayerController::Move(const FInputActionValue& InputActionValue)
 	{
 		ControlledPawn->AddMovementInput(ForwardDirection, InputAxisVector.Y);
 		ControlledPawn->AddMovementInput(RightDirection, InputAxisVector.X);
+	}
+}
+
+void AArcanePlayerController::PlayerTick(float DeltaTime)
+{
+	Super::PlayerTick(DeltaTime);
+	CursorTrace();
+}
+
+void AArcanePlayerController::CursorTrace()
+{
+	// Unhighlight
+	auto ClearHighlight = [this]
+	{
+		if (HighlightedInterface)
+		{
+			HighlightedInterface->UnHighlightActor();
+			UE_LOG(LogTemp, Display, TEXT("%s clear"), *HighlightedInterface.GetObject()->GetName());
+		}
+		this->HighlightedInterface = nullptr;
+	};
+
+	// Highlight
+	auto Highlight = [this](const TScriptInterface<IHighlightInterface>& HighlightInterface)
+	{
+		HighlightInterface->HighlightActor();
+		this->HighlightedInterface = HighlightInterface;
+
+		UE_LOG(LogTemp, Display, TEXT("%s highlighted"), *HighlightInterface.GetObject()->GetName());
+	};
+
+	FHitResult CursorHit;
+	GetHitResultUnderCursor(ECC_Visibility, /*bTraceComplex*/ false, CursorHit);
+	if (!CursorHit.bBlockingHit)
+	{
+		ClearHighlight();
+		return;
+	}
+
+	AActor* HighlightedActor = CursorHit.GetActor();
+	if (IHighlightInterface* HighlightedPtr = Cast<IHighlightInterface>(HighlightedActor))
+	{
+		if (HighlightedInterface && HighlightedActor == HighlightedInterface.GetObject())
+		{
+			return;
+		}
+		ClearHighlight();
+		TScriptInterface<IHighlightInterface> HighlightedInterfacePtr;
+		HighlightedInterfacePtr.SetObject(HighlightedActor);
+		HighlightedInterfacePtr.SetInterface(HighlightedPtr);
+		Highlight(HighlightedInterfacePtr);
+	}
+	else
+	{
+		ClearHighlight();
 	}
 }

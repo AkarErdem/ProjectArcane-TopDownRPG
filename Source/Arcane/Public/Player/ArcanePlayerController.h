@@ -6,6 +6,7 @@
 #include "GameFramework/PlayerController.h"
 #include "ArcanePlayerController.generated.h"
 
+class IHighlightInterface;
 class UInputMappingContext;
 class UInputAction;
 struct FInputActionValue;
@@ -17,6 +18,7 @@ class ARCANE_API AArcanePlayerController : public APlayerController
 
 public:
 	AArcanePlayerController();
+	virtual void PlayerTick(float DeltaTime) override;
 
 protected:
 	virtual void BeginPlay() override;
@@ -29,5 +31,9 @@ private:
 	UPROPERTY(EditAnywhere, Category="Input")
 	TObjectPtr<UInputAction> MoveAction;
 
+	UPROPERTY()
+	TScriptInterface<IHighlightInterface> HighlightedInterface;
+
 	void Move(const FInputActionValue& InputActionValue);
+	void CursorTrace();
 };
