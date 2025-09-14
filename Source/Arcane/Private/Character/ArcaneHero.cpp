@@ -4,7 +4,9 @@
 #include "AbilitySystemComponent.h"
 #include "AbilitySystem/ArcaneAbilitySystemComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Player/ArcanePlayerController.h"
 #include "Player/ArcanePlayerState.h"
+#include "UI/HUD/ArcaneHUD.h"
 
 AArcaneHero::AArcaneHero()
 {
@@ -39,7 +41,16 @@ void AArcaneHero::InitAbilityActorInfo()
 	AArcanePlayerState* ArcanePlayerState = GetPlayerState<AArcanePlayerState>();
 	check(ArcanePlayerState);
 
+	// Init GAS
 	ArcanePlayerState->GetAbilitySystemComponent()->InitAbilityActorInfo(ArcanePlayerState, this);
 	AbilitySystemComponent = Cast<UArcaneAbilitySystemComponent>(ArcanePlayerState->GetAbilitySystemComponent());
 	AttributeSet = Cast<UArcaneAttributeSet>(ArcanePlayerState->GetAttributeSet());
+
+	// Init HUD
+	// PlayerController only is not a nullptr if this is owned by this player
+	if (AArcanePlayerController* PlayerController = GetController<AArcanePlayerController>();
+		AArcaneHUD* ArcaneHUD = PlayerController->GetHUD<AArcaneHUD>())
+	{
+		ArcaneHUD->InitOverlay(PlayerController, PlayerController->PlayerState, AbilitySystemComponent, AttributeSet);
+	}
 }

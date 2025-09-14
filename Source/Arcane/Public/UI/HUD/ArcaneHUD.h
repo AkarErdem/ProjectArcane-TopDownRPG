@@ -6,7 +6,11 @@
 #include "GameFramework/HUD.h"
 #include "ArcaneHUD.generated.h"
 
+class UAttributeSet;
+class UAbilitySystemComponent;
+class UOverlayWidgetController;
 class UArcaneUserWidget;
+struct FWidgetControllerData;
 
 UCLASS()
 class ARCANE_API AArcaneHUD : public AHUD
@@ -14,13 +18,20 @@ class ARCANE_API AArcaneHUD : public AHUD
 	GENERATED_BODY()
 
 public:
+	UOverlayWidgetController* GetOverlayWidgetController(const FWidgetControllerData& Data);
+
+	void InitOverlay(APlayerController* PlayerController, APlayerState* PlayerState, UAbilitySystemComponent* AbilitySystemComponent, UAttributeSet* AttributeSet);
+
+private:
 	UPROPERTY()
 	TObjectPtr<UArcaneUserWidget> OverlayWidget;
 
-protected:
-	virtual void BeginPlay() override;
+	UPROPERTY()
+	TObjectPtr<UOverlayWidgetController> OverlayWidgetController;
 
-private:
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<UArcaneUserWidget> OverlayWidgetClass;
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<UOverlayWidgetController> OverlayWidgetControllerClass;
 };

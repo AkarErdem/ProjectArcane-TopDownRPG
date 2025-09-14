@@ -6,19 +6,21 @@
 #include "Blueprint/UserWidget.h"
 #include "ArcaneUserWidget.generated.h"
 
+class UArcaneWidgetController;
+
 UCLASS()
 class ARCANE_API UArcaneUserWidget : public UUserWidget
 {
 	GENERATED_BODY()
 
 public:
-	UPROPERTY(BlueprintReadOnly)
-	TObjectPtr<UObject> WidgetController;
-
 	UFUNCTION(BlueprintCallable)
-	void SetWidgetController(UObject* InWidgetController);
+	void SetWidgetController(UArcaneWidgetController* InWidgetController);
 
 protected:
+	UPROPERTY(BlueprintReadOnly)
+	TObjectPtr<UArcaneWidgetController> WidgetController;
+
 	UFUNCTION(BlueprintImplementableEvent)
 	void OnWidgetControllerSet();
 };
