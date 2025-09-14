@@ -1,7 +1,7 @@
 // Copyright (c) 2025 Erdem Akar
 
-
 #include "Character/ArcaneCharacterBase.h"
+#include "AbilitySystem/ArcaneAbilitySystemComponent.h"
 
 AArcaneCharacterBase::AArcaneCharacterBase()
 {
@@ -12,8 +12,12 @@ AArcaneCharacterBase::AArcaneCharacterBase()
 	Weapon->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 
+UAbilitySystemComponent* AArcaneCharacterBase::GetAbilitySystemComponent() const
+{
+	return AbilitySystemComponent;
+}
+
 void AArcaneCharacterBase::BeginPlay()
 {
 	Super::BeginPlay();
-
 }

@@ -15,12 +15,16 @@ class ARCANE_API AArcaneEnemy : public AArcaneCharacterBase, public IEnemyInterf
 public:
 	AArcaneEnemy();
 
+	//~ Begin AActor Interface.
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+	//~ End AActor Interface.
 
+	//~ Begin IHighlight Interface.
 	virtual void HighlightActor() override;
 	virtual void UnHighlightActor() override;
 
 	UPROPERTY(BlueprintReadOnly)
 	bool bHighlighted;
+	//~ End IHighlight Interface.
 };
