@@ -9,3 +9,11 @@ void UArcaneWidgetController::SetWidgetControllerData(const FWidgetControllerDat
 	AbilitySystemComponent = WidgetControllerData.AbilitySystemComponent;
 	AttributeSet = WidgetControllerData.AttributeSet;
 }
+
+void UArcaneWidgetController::BroadcastInitialValues()
+{
+}
+
+void UArcaneWidgetController::BindCallbacksToDependencies()
+{
+}

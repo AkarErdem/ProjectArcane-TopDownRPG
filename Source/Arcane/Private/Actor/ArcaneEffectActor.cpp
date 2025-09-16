@@ -1,7 +1,6 @@
 ﻿// Copyright (c) 2025 Erdem Akar
 
 #include "Actor/ArcaneEffectActor.h"
-
 #include "AbilitySystemComponent.h"
 #include "AbilitySystemInterface.h"
 #include "AbilitySystem/ArcaneAttributeSet.h"
@@ -36,13 +35,13 @@ void AArcaneEffectActor::OnBeginOverlap(UPrimitiveComponent* OverlapComponent, A
 	UPrimitiveComponent* OtherComponent, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	// TODO: Added for testing, refactor here to use gameplay effect
-	if (IAbilitySystemInterface* ASCInterface = Cast<IAbilitySystemInterface>(OtherActor))
+	if (const IAbilitySystemInterface* ASCInterface = Cast<IAbilitySystemInterface>(OtherActor))
 	{
-		const UArcaneAttributeSet* ArcaneAttributeSet = Cast<UArcaneAttributeSet>(
-			ASCInterface->GetAbilitySystemComponent()->GetAttributeSet(UArcaneAttributeSet::StaticClass()));
-
+		const UAbilitySystemComponent* ASC = ASCInterface->GetAbilitySystemComponent();
+		const UArcaneAttributeSet* ArcaneAttributeSet = Cast<UArcaneAttributeSet>(ASC->GetAttributeSet(UArcaneAttributeSet::StaticClass()));
 		UArcaneAttributeSet* MutableArcaneAttributeSet = const_cast<UArcaneAttributeSet*>(ArcaneAttributeSet);
 		MutableArcaneAttributeSet->SetHealth(MutableArcaneAttributeSet->GetHealth() + 50.f);
+		MutableArcaneAttributeSet->SetMana(MutableArcaneAttributeSet->GetMana() - 25.f);
 
 		Destroy();
 	}

@@ -10,5 +10,4 @@ UCLASS()
 class ARCANE_API UArcaneAbilitySystemComponent : public UAbilitySystemComponent
 {
 	GENERATED_BODY()
-	
 };

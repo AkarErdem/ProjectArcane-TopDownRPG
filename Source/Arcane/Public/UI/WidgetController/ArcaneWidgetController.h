@@ -26,7 +26,9 @@ struct FWidgetControllerData
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<UAttributeSet> AttributeSet = nullptr;
 
-	FWidgetControllerData() { }
+	FWidgetControllerData()
+	{
+	}
 
 	FWidgetControllerData(
 		APlayerController* InPlayerController,
@@ -37,7 +39,8 @@ struct FWidgetControllerData
 		PlayerState(InPlayerState),
 		AbilitySystemComponent(InAbilitySystemComponent),
 		AttributeSet(InAttributeSet)
-	{ }
+	{
+	}
 };
 
 UCLASS()
@@ -48,6 +51,10 @@ class ARCANE_API UArcaneWidgetController : public UObject
 public:
 	UFUNCTION(BlueprintCallable)
 	void SetWidgetControllerData(const FWidgetControllerData& WidgetControllerData);
+
+	virtual void BroadcastInitialValues();
+
+	virtual void BindCallbacksToDependencies();
 
 protected:
 	UPROPERTY(BlueprintReadOnly, Category="WidgetController")

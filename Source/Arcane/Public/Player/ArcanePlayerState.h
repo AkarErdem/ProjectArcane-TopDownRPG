@@ -20,7 +20,6 @@ public:
 	AArcanePlayerState();
 
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
-
 	FORCEINLINE UAttributeSet* GetAttributeSet() const { return AttributeSet; }
 
 protected:

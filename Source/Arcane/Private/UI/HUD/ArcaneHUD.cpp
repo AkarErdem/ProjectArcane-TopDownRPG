@@ -11,12 +11,13 @@ UOverlayWidgetController* AArcaneHUD::GetOverlayWidgetController(const FWidgetCo
 	{
 		OverlayWidgetController = NewObject<UOverlayWidgetController>(this, OverlayWidgetControllerClass);
 		OverlayWidgetController->SetWidgetControllerData(Data);
+		OverlayWidgetController->BindCallbacksToDependencies();
 	}
 	return OverlayWidgetController;
 }
 
 void AArcaneHUD::InitOverlay(APlayerController* PlayerController, APlayerState* PlayerState,
-	UAbilitySystemComponent* AbilitySystemComponent, UAttributeSet* AttributeSet)
+                             UAbilitySystemComponent* AbilitySystemComponent, UAttributeSet* AttributeSet)
 {
 	checkf(OverlayWidgetClass, TEXT("OverlayWidgetClass uninitialized, fill out BP_ArcaneHUD."));
 	checkf(OverlayWidgetControllerClass, TEXT("OverlayWidgetControllerClass uninitialized, fill out BP_ArcaneHUD."));
@@ -26,5 +27,7 @@ void AArcaneHUD::InitOverlay(APlayerController* PlayerController, APlayerState* 
 
 	OverlayWidget = CreateWidget<UArcaneUserWidget>(GetWorld(), OverlayWidgetClass);
 	OverlayWidget->SetWidgetController(WidgetController);
+	WidgetController->BroadcastInitialValues();
+
 	OverlayWidget->AddToViewport();
 }

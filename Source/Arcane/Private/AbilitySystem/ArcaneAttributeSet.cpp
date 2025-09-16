@@ -6,7 +6,7 @@
 
 UArcaneAttributeSet::UArcaneAttributeSet()
 {
-	InitHealth(100.f);
+	InitHealth(20.f);
 	InitMaxHealth(100.f);
 	InitMana(50.f);
 	InitMaxMana(50.f);
