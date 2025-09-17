@@ -48,9 +48,12 @@ void AArcaneHero::InitAbilityActorInfo()
 
 	// Init HUD
 	// PlayerController only is not a nullptr if this is owned by this player
-	if (AArcanePlayerController* PlayerController = GetController<AArcanePlayerController>();
-		AArcaneHUD* ArcaneHUD = PlayerController->GetHUD<AArcaneHUD>())
+	if (AArcanePlayerController* PlayerController = GetController<AArcanePlayerController>())
 	{
-		ArcaneHUD->InitOverlay(PlayerController, PlayerController->PlayerState, AbilitySystemComponent, AttributeSet);
+		if (AArcaneHUD* ArcaneHUD = PlayerController->GetHUD<AArcaneHUD>())
+		{
+			ArcaneHUD->InitOverlay(PlayerController, PlayerController->PlayerState, AbilitySystemComponent,
+			                       AttributeSet);
+		}
 	}
 }

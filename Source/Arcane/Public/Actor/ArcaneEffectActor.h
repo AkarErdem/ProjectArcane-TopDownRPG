@@ -6,8 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "ArcaneEffectActor.generated.h"
 
-class UAbilitySystemComponent;
-class USphereComponent;
+class UGameplayEffect;
 
 UCLASS()
 class ARCANE_API AArcaneEffectActor : public AActor
@@ -17,22 +16,8 @@ class ARCANE_API AArcaneEffectActor : public AActor
 protected:
 	AArcaneEffectActor();
 
-	virtual void BeginPlay() override;
-	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+	void ApplyEffectToTarget(AActor* TargetActor, TSubclassOf<UGameplayEffect> GameplayEffectClass);
 
-	UFUNCTION()
-	virtual void OnBeginOverlap(UPrimitiveComponent* OverlapComponent, AActor* OtherActor,
-	                            UPrimitiveComponent* OtherComponent, int32 OtherBodyIndex, bool bFromSweep,
-	                            const FHitResult& SweepResult);
-
-	UFUNCTION()
-	virtual void OnEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-	                          UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
-
-private:
-	UPROPERTY(VisibleAnywhere)
-	TObjectPtr<USphereComponent> Sphere;
-
-	UPROPERTY(VisibleAnywhere)
-	TObjectPtr<UStaticMeshComponent> Mesh;
+	UPROPERTY(EditAnywhere, Category = "Applied Effects")
+	TSubclassOf<UGameplayEffect> InstantGameplayEffectClass;
 };
