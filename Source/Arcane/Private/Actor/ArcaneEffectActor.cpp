@@ -24,8 +24,17 @@ void AArcaneEffectActor::ApplyEffect(AActor* TargetActor, const TSubclassOf<UGam
 		const FGameplayEffectSpecHandle EffectSpecHandle = ASC->MakeOutgoingSpec(GameplayEffectClass, 1.0f, EffectContext);
 		const FActiveGameplayEffectHandle ActiveEffectHandle = ASC->ApplyGameplayEffectSpecToTarget(*EffectSpecHandle.Data, ASC);
 
+		FEffect MatchingEffect;
+		for (const FEffect& Effect : Effects)
+		{
+			if (Effect.EffectClass == GameplayEffectClass)
+			{
+				MatchingEffect = Effect;
+				break;
+			}
+		}
 		if (EffectSpecHandle.Data->Def->DurationPolicy == EGameplayEffectDurationType::Infinite &&
-			InfiniteEffectRemovalPolicy == EEffectRemovalPolicy::RemoveOnEndOverlap)
+			MatchingEffect.RemovalPolicy == EEffectRemovalPolicy::RemoveOnEndOverlap)
 		{
 			AppliedInfiniteEffects.Add(ActiveEffectHandle, ASC);
 		}
@@ -65,6 +74,11 @@ void AArcaneEffectActor::OnOverlap(AActor* TargetActor)
 			ApplyEffect(TargetActor, Effect.EffectClass);
 		}
 	}
+
+	if (DestroyPolicy == EEffectPolicy::ApplyOnOverlap)
+	{
+		Destroy();
+	}
 }
 
 void AArcaneEffectActor::OnEndOverlap(AActor* TargetActor)
@@ -80,5 +94,10 @@ void AArcaneEffectActor::OnEndOverlap(AActor* TargetActor)
 		{
 			RemoveInfiniteEffect(TargetActor);
 		}
+	}
+
+	if (DestroyPolicy == EEffectPolicy::ApplyOnEndOverlap)
+	{
+		Destroy();
 	}
 }
