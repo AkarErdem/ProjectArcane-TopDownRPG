@@ -36,7 +36,9 @@ void AArcaneEffectActor::RemoveInfiniteEffect(AActor* TargetActor)
 {
 	const UAbilitySystemComponent* ASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(TargetActor);
 	if (!IsValid(ASC))
+	{
 		return;
+	}
 
 	TArray<FActiveGameplayEffectHandle> HandlesToRemove;
 	for (auto& Pair : AppliedInfiniteEffects)
@@ -59,20 +61,24 @@ void AArcaneEffectActor::OnOverlap(AActor* TargetActor)
 	for (const FEffect& Effect : Effects)
 	{
 		if (Effect.Policy == EEffectPolicy::ApplyOnOverlap)
+		{
 			ApplyEffect(TargetActor, Effect.EffectClass);
+		}
 	}
 }
 
 void AArcaneEffectActor::OnEndOverlap(AActor* TargetActor)
 {
-	for (const FEffect& Effect : Effects)
+	for (const auto& [EffectClass, Policy, RemovalPolicy] : Effects)
 	{
-		if (Effect.Policy == EEffectPolicy::ApplyOnEndOverlap)
-			ApplyEffect(TargetActor, Effect.EffectClass);
-	}
+		if (Policy == EEffectPolicy::ApplyOnEndOverlap)
+		{
+			ApplyEffect(TargetActor, EffectClass);
+		}
 
-	if (InfiniteEffectRemovalPolicy == EEffectRemovalPolicy::RemoveOnEndOverlap)
-	{
-		RemoveInfiniteEffect(TargetActor);
+		if (RemovalPolicy == EEffectRemovalPolicy::RemoveOnEndOverlap)
+		{
+			RemoveInfiniteEffect(TargetActor);
+		}
 	}
 }
