@@ -12,85 +12,67 @@ AArcaneEffectActor::AArcaneEffectActor()
 	SetRootComponent(SceneRoot);
 }
 
-void AArcaneEffectActor::ApplyEffectToTarget(AActor* TargetActor, const TSubclassOf<UGameplayEffect> GameplayEffectClass)
+void AArcaneEffectActor::ApplyEffect(AActor* TargetActor, const TSubclassOf<UGameplayEffect> GameplayEffectClass)
 {
 	if (UAbilitySystemComponent* ASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(TargetActor))
 	{
-		UE_LOG(LogTemp, Error, TEXT("in: %s"), *this->GetName());
 		check(GameplayEffectClass);
 
 		FGameplayEffectContextHandle EffectContext = ASC->MakeEffectContext();
 		EffectContext.AddSourceObject(this);
 
-		const FGameplayEffectSpecHandle EffectSpecHandle = ASC->MakeOutgoingSpec(
-			GameplayEffectClass, 1.0f, EffectContext);
-		const FActiveGameplayEffectHandle ActiveEffectHandle = ASC->ApplyGameplayEffectSpecToTarget(
-			*EffectSpecHandle.Data, ASC);
+		const FGameplayEffectSpecHandle EffectSpecHandle = ASC->MakeOutgoingSpec(GameplayEffectClass, 1.0f, EffectContext);
+		const FActiveGameplayEffectHandle ActiveEffectHandle = ASC->ApplyGameplayEffectSpecToTarget(*EffectSpecHandle.Data, ASC);
 
-		if (EffectSpecHandle.Data.Get()->Def.Get()->DurationPolicy == EGameplayEffectDurationType::Infinite &&
+		if (EffectSpecHandle.Data->Def->DurationPolicy == EGameplayEffectDurationType::Infinite &&
 			InfiniteEffectRemovalPolicy == EEffectRemovalPolicy::RemoveOnEndOverlap)
 		{
-			AppliedEffects.Add(ActiveEffectHandle, TWeakObjectPtr(ASC));
+			AppliedInfiniteEffects.Add(ActiveEffectHandle, ASC);
 		}
 	}
 }
 
-void AArcaneEffectActor::RemoveEffectFromTarget(AActor* TargetActor)
+void AArcaneEffectActor::RemoveInfiniteEffect(AActor* TargetActor)
 {
-	if (const UAbilitySystemComponent* ASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(TargetActor))
-	{
-		UE_LOG(LogTemp, Error, TEXT("out: %s"), *this->GetName());
+	const UAbilitySystemComponent* ASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(TargetActor);
+	if (!IsValid(ASC))
+		return;
 
-		TArray<FActiveGameplayEffectHandle> HandlesToRemove;
-		for (auto& Pair : AppliedEffects)
+	TArray<FActiveGameplayEffectHandle> HandlesToRemove;
+	for (auto& Pair : AppliedInfiniteEffects)
+	{
+		if (!IsValid(Pair.Value) || Pair.Value != ASC)
 		{
-			if (!Pair.Value.IsValid() || Pair.Value != ASC)
-			{
-				continue;
-			}
-			Pair.Value->RemoveActiveGameplayEffect(Pair.Key);
-			HandlesToRemove.Add(Pair.Key);
+			continue;
 		}
-		for (FActiveGameplayEffectHandle& ToRemove : HandlesToRemove)
-		{
-			AppliedEffects.Remove(ToRemove);
-		}
+		Pair.Value->RemoveActiveGameplayEffect(Pair.Key, 1);
+		HandlesToRemove.Add(Pair.Key);
+	}
+	for (FActiveGameplayEffectHandle& ToRemove : HandlesToRemove)
+	{
+		AppliedInfiniteEffects.Remove(ToRemove);
 	}
 }
 
 void AArcaneEffectActor::OnOverlap(AActor* TargetActor)
 {
-	if (InstantEffectPolicy == EEffectPolicy::ApplyOnOverlap)
+	for (const FEffect& Effect : Effects)
 	{
-		ApplyEffectToTarget(TargetActor, InstantGameplayEffectClass);
-	}
-	if (DurationEffectPolicy == EEffectPolicy::ApplyOnOverlap)
-	{
-		ApplyEffectToTarget(TargetActor, DurationGameplayEffectClass);
-	}
-	if (InfiniteEffectPolicy == EEffectPolicy::ApplyOnOverlap)
-	{
-		ApplyEffectToTarget(TargetActor, InfiniteGameplayEffectClass);
+		if (Effect.Policy == EEffectPolicy::ApplyOnOverlap)
+			ApplyEffect(TargetActor, Effect.EffectClass);
 	}
 }
 
 void AArcaneEffectActor::OnEndOverlap(AActor* TargetActor)
 {
-	if (InstantEffectPolicy == EEffectPolicy::ApplyOnEndOverlap)
+	for (const FEffect& Effect : Effects)
 	{
-		ApplyEffectToTarget(TargetActor, InstantGameplayEffectClass);
-	}
-	if (DurationEffectPolicy == EEffectPolicy::ApplyOnEndOverlap)
-	{
-		ApplyEffectToTarget(TargetActor, DurationGameplayEffectClass);
-	}
-	if (InfiniteEffectPolicy == EEffectPolicy::ApplyOnEndOverlap)
-	{
-		ApplyEffectToTarget(TargetActor, InfiniteGameplayEffectClass);
+		if (Effect.Policy == EEffectPolicy::ApplyOnEndOverlap)
+			ApplyEffect(TargetActor, Effect.EffectClass);
 	}
 
 	if (InfiniteEffectRemovalPolicy == EEffectRemovalPolicy::RemoveOnEndOverlap)
 	{
-		RemoveEffectFromTarget(TargetActor);
+		RemoveInfiniteEffect(TargetActor);
 	}
 }
