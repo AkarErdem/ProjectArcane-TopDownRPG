@@ -67,6 +67,9 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Applied Effects")
 	EEffectPolicy DestroyPolicy = EEffectPolicy::DoNotApply;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Applied Effects")
+	float ActorLevel = 1.f;
+
 private:
 	UPROPERTY()
 	TMap<FActiveGameplayEffectHandle, UAbilitySystemComponent*> AppliedInfiniteEffects;

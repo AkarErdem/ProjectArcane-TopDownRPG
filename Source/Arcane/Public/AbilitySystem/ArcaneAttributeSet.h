@@ -13,13 +13,38 @@
 	GAMEPLAYATTRIBUTE_VALUE_SETTER(PropertyName) \
 	GAMEPLAYATTRIBUTE_VALUE_INITTER(PropertyName)
 
+USTRUCT()
+struct FEffectProperties
+{
+	GENERATED_BODY()
+	FEffectProperties() { }
+
+	FGameplayEffectContextHandle Context;
+
+	UPROPERTY()
+	UAbilitySystemComponent* ASC = nullptr;
+
+	UPROPERTY()
+	AActor* AvatarActor = nullptr;
+
+	UPROPERTY()
+	AController* Controller = nullptr;
+
+	UPROPERTY()
+	ACharacter* Character = nullptr;
+};
+
 UCLASS()
 class ARCANE_API UArcaneAttributeSet : public UAttributeSet
 {
 	GENERATED_BODY()
+
 public:
 	UArcaneAttributeSet();
+
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+	virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) override;
+	virtual void PostGameplayEffectExecute(const struct FGameplayEffectModCallbackData& Data) override;
 
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Health, Category = "Vital Attributes")
 	FGameplayAttributeData Health;
@@ -48,4 +73,8 @@ public:
 
 	UFUNCTION()
 	void OnRep_MaxMana(const FGameplayAttributeData& OldMaxMana) const;
+
+private:
+	static void SetEffectProperties(const FGameplayEffectModCallbackData& Data, FEffectProperties& Source,
+	                                FEffectProperties& Target);
 };
