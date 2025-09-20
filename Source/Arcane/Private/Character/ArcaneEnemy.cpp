@@ -18,7 +18,7 @@ AArcaneEnemy::AArcaneEnemy()
 void AArcaneEnemy::BeginPlay()
 {
 	Super::BeginPlay();
-	AbilitySystemComponent->InitAbilityActorInfo(this, this);
+	InitAbilityActorInfo();
 }
 
 void AArcaneEnemy::EndPlay(const EEndPlayReason::Type EndPlayReason)
@@ -26,10 +26,17 @@ void AArcaneEnemy::EndPlay(const EEndPlayReason::Type EndPlayReason)
 	Super::EndPlay(EndPlayReason);
 }
 
+void AArcaneEnemy::InitAbilityActorInfo()
+{
+	Super::InitAbilityActorInfo();
+	AbilitySystemComponent->InitAbilityActorInfo(this, this);
+	AbilitySystemComponent->BindGameplayEffectDelegates();
+}
+
 void AArcaneEnemy::HighlightActor()
 {
 	bHighlighted = true;
-	for (TInlineComponentArray<UMeshComponent*> Meshes(this, /*bIncludeFromChildActors*/ true); auto* M : Meshes)
+	for(TInlineComponentArray<UMeshComponent*> Meshes(this, /*bIncludeFromChildActors*/ true); auto* M : Meshes)
 	{
 		M->SetCustomDepthStencilValue(CUSTOM_DEPTH_RED);
 		M->SetRenderCustomDepth(true);
@@ -39,7 +46,7 @@ void AArcaneEnemy::HighlightActor()
 void AArcaneEnemy::UnHighlightActor()
 {
 	bHighlighted = false;
-	for (TInlineComponentArray<UMeshComponent*> Meshes(this, /*bIncludeFromChildActors*/ true); auto* M : Meshes)
+	for(TInlineComponentArray<UMeshComponent*> Meshes(this, /*bIncludeFromChildActors*/ true); auto* M : Meshes)
 	{
 		M->SetRenderCustomDepth(false);
 	}

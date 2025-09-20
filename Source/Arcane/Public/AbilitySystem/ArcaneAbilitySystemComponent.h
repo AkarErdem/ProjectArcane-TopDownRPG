@@ -10,4 +10,10 @@ UCLASS()
 class ARCANE_API UArcaneAbilitySystemComponent : public UAbilitySystemComponent
 {
 	GENERATED_BODY()
+
+public:
+	virtual void BindGameplayEffectDelegates();
+
+protected:
+	void OnGameplayEffectApplied(UAbilitySystemComponent* ASC, const FGameplayEffectSpec& EffectSpec, FActiveGameplayEffectHandle EffectHandle);
 };

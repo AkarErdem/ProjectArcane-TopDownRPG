@@ -21,3 +21,5 @@ void AArcaneCharacterBase::BeginPlay()
 {
 	Super::BeginPlay();
 }
+
+void AArcaneCharacterBase::InitAbilityActorInfo() { }

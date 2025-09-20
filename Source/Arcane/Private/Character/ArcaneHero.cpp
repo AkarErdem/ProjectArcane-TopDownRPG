@@ -1,7 +1,6 @@
 // Copyright (c) 2025 Erdem Akar
 
 #include "Character/ArcaneHero.h"
-#include "AbilitySystemComponent.h"
 #include "AbilitySystem/ArcaneAbilitySystemComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Player/ArcanePlayerController.h"
@@ -38,22 +37,26 @@ void AArcaneHero::OnRep_PlayerState()
 
 void AArcaneHero::InitAbilityActorInfo()
 {
+	Super::InitAbilityActorInfo();
+
 	AArcanePlayerState* ArcanePlayerState = GetPlayerState<AArcanePlayerState>();
 	check(ArcanePlayerState);
 
 	// Init GAS
 	ArcanePlayerState->GetAbilitySystemComponent()->InitAbilityActorInfo(ArcanePlayerState, this);
+
 	AbilitySystemComponent = Cast<UArcaneAbilitySystemComponent>(ArcanePlayerState->GetAbilitySystemComponent());
 	AttributeSet = Cast<UArcaneAttributeSet>(ArcanePlayerState->GetAttributeSet());
 
+	AbilitySystemComponent->BindGameplayEffectDelegates();
+
 	// Init HUD
 	// PlayerController only is not a nullptr if this is owned by this player
-	if (AArcanePlayerController* PlayerController = GetController<AArcanePlayerController>())
+	if(AArcanePlayerController* PlayerController = GetController<AArcanePlayerController>())
 	{
-		if (AArcaneHUD* ArcaneHUD = PlayerController->GetHUD<AArcaneHUD>())
+		if(AArcaneHUD* ArcaneHUD = PlayerController->GetHUD<AArcaneHUD>())
 		{
-			ArcaneHUD->InitOverlay(PlayerController, PlayerController->PlayerState, AbilitySystemComponent,
-			                       AttributeSet);
+			ArcaneHUD->InitOverlay(PlayerController, PlayerController->PlayerState, AbilitySystemComponent, AttributeSet);
 		}
 	}
 }

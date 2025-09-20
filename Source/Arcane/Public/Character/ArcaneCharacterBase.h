@@ -21,7 +21,10 @@ public:
 	AArcaneCharacterBase();
 
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
-	FORCEINLINE UAttributeSet* GetAttributeSet() const { return AttributeSet; }
+	FORCEINLINE UAttributeSet* GetAttributeSet() const
+	{
+		return AttributeSet;
+	}
 
 protected:
 	virtual void BeginPlay() override;
@@ -34,4 +37,6 @@ protected:
 
 	UPROPERTY()
 	TObjectPtr<UArcaneAttributeSet> AttributeSet;
+
+	virtual void InitAbilityActorInfo();
 };

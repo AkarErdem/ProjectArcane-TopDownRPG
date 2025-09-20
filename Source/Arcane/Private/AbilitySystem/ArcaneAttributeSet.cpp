@@ -1,9 +1,7 @@
 ﻿// Copyright (c) 2025 Erdem Akar
 
 #include "AbilitySystem/ArcaneAttributeSet.h"
-
 #include "AbilitySystemBlueprintLibrary.h"
-#include "AbilitySystemComponent.h"
 #include "GameplayEffectExtension.h"
 #include "MathUtil.h"
 #include "GameFramework/Character.h"
