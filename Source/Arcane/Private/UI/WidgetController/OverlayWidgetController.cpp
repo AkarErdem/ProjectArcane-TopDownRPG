@@ -1,6 +1,7 @@
 // Copyright (c) 2025 Erdem Akar
 
 #include "UI/WidgetController/OverlayWidgetController.h"
+#include "AbilitySystem/ArcaneAbilitySystemComponent.h"
 #include "AbilitySystem/ArcaneAttributeSet.h"
 
 void UOverlayWidgetController::BroadcastInitialValues()
@@ -24,14 +25,28 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(ArcaneAttributeSet->GetHealthAttribute())
 	                      .AddUObject(this, &UOverlayWidgetController::HealthChanged);
 
+	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(ArcaneAttributeSet->GetHealthAttribute())
+	                      .AddUObject(this, &UOverlayWidgetController::HealthChanged);
+
 	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(ArcaneAttributeSet->GetMaxHealthAttribute())
 	                      .AddUObject(this, &UOverlayWidgetController::MaxHealthChanged);
 
 	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(ArcaneAttributeSet->GetManaAttribute())
-						  .AddUObject(this, &UOverlayWidgetController::ManaChanged);
+	                      .AddUObject(this, &UOverlayWidgetController::ManaChanged);
 
 	AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(ArcaneAttributeSet->GetMaxManaAttribute())
-						  .AddUObject(this, &UOverlayWidgetController::MaxManaChanged);
+	                      .AddUObject(this, &UOverlayWidgetController::MaxManaChanged);
+
+	CastChecked<UArcaneAbilitySystemComponent>(AbilitySystemComponent)->EffectAssetTags.AddLambda([this](const FGameplayTagContainer& AssetTags)
+	{
+		for(FGameplayTag Tag : AssetTags)
+		{
+			// Broadcast tag to the Widget Controller
+			const FUIWidgetRow* WidgetRow = GetDataTableRowByTag<FUIWidgetRow>(MessageWidgetDataTable, Tag);
+			const FString Msg = FString::Printf(TEXT("GE Tag: %s"), *WidgetRow->MessageTag.ToString());
+			GEngine->AddOnScreenDebugMessage(-1, 8.f, FColor::Green, Msg);
+		}
+	});
 }
 
 void UOverlayWidgetController::HealthChanged(const FOnAttributeChangeData& Data) const

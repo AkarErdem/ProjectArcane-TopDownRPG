@@ -6,6 +6,8 @@
 #include "AbilitySystemComponent.h"
 #include "ArcaneAbilitySystemComponent.generated.h"
 
+DECLARE_MULTICAST_DELEGATE_OneParam(FEffectAssetTags, const FGameplayTagContainer& /*AssetTags*/);
+
 UCLASS()
 class ARCANE_API UArcaneAbilitySystemComponent : public UAbilitySystemComponent
 {
@@ -13,6 +15,8 @@ class ARCANE_API UArcaneAbilitySystemComponent : public UAbilitySystemComponent
 
 public:
 	virtual void BindGameplayEffectDelegates();
+
+	FEffectAssetTags EffectAssetTags;
 
 protected:
 	void OnGameplayEffectApplied(UAbilitySystemComponent* ASC, const FGameplayEffectSpec& EffectSpec, FActiveGameplayEffectHandle EffectHandle);
