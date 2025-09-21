@@ -7,9 +7,6 @@
 #include "UI/WidgetController/ArcaneWidgetController.h"
 #include "OverlayWidgetController.generated.h"
 
-class UArcaneUserWidget;
-struct FOnAttributeChangeData;
-
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnHealthChangedSignature, float, NewHealth);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnMaxHealthChangedSignature, float, NewMaxHealth);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnManaChangedSignature, float, NewMana);
@@ -27,11 +24,14 @@ struct FUIWidgetRow : public FTableRowBase
 	FText Message = FText();
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	TSubclassOf<UArcaneUserWidget> MessageWidget;
+	TSubclassOf<class UArcaneUserWidget> MessageWidget;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	UTexture2D* Image = nullptr;
 };
+
+struct FOnAttributeChangeData;
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FWidgetMessageReceived, FUIWidgetRow, WidgetRow);
 
 UCLASS(BlueprintType, Blueprintable)
 class ARCANE_API UOverlayWidgetController : public UArcaneWidgetController
@@ -49,10 +49,13 @@ public:
 	FOnMaxHealthChangedSignature OnMaxHealthChanged;
 
 	UPROPERTY(BlueprintAssignable, Category="GAS|Attributes")
-	FOnHealthChangedSignature OnManaChanged;
+	FOnManaChangedSignature OnManaChanged;
 
 	UPROPERTY(BlueprintAssignable, Category="GAS|Attributes")
-	FOnMaxHealthChangedSignature OnMaxManaChanged;
+	FOnMaxManaChangedSignature OnMaxManaChanged;
+
+	UPROPERTY(BlueprintAssignable, Category="GAS|Attributes")
+	FWidgetMessageReceived OnWidgetMessageReceived;
 
 protected:
 	void HealthChanged(const FOnAttributeChangeData& Data) const;
@@ -66,6 +69,10 @@ protected:
 
 	template<typename T>
 	static T* GetDataTableRowByTag(UDataTable* DataTable, const FGameplayTag& Tag);
+
+private:
+	UPROPERTY(EditDefaultsOnly, Category="Widget Data")
+	FGameplayTag MessagesTag;
 };
 
 template<typename T>

@@ -11,7 +11,6 @@ void UOverlayWidgetController::BroadcastInitialValues()
 	const UArcaneAttributeSet* ArcaneAttributeSet = CastChecked<UArcaneAttributeSet>(AttributeSet);
 	OnHealthChanged.Broadcast(ArcaneAttributeSet->GetHealth());
 	OnMaxHealthChanged.Broadcast(ArcaneAttributeSet->GetMaxHealth());
-
 	OnManaChanged.Broadcast(ArcaneAttributeSet->GetMana());
 	OnMaxManaChanged.Broadcast(ArcaneAttributeSet->GetMaxMana());
 }
@@ -39,12 +38,13 @@ void UOverlayWidgetController::BindCallbacksToDependencies()
 
 	CastChecked<UArcaneAbilitySystemComponent>(AbilitySystemComponent)->EffectAssetTags.AddLambda([this](const FGameplayTagContainer& AssetTags)
 	{
-		for(FGameplayTag Tag : AssetTags)
+		for(const FGameplayTag& Tag : AssetTags)
 		{
-			// Broadcast tag to the Widget Controller
-			const FUIWidgetRow* WidgetRow = GetDataTableRowByTag<FUIWidgetRow>(MessageWidgetDataTable, Tag);
-			const FString Msg = FString::Printf(TEXT("GE Tag: %s"), *WidgetRow->MessageTag.ToString());
-			GEngine->AddOnScreenDebugMessage(-1, 8.f, FColor::Green, Msg);
+			if(Tag.MatchesTag(MessagesTag))
+			{
+				const FUIWidgetRow* Row = GetDataTableRowByTag<FUIWidgetRow>(MessageWidgetDataTable, Tag);
+				OnWidgetMessageReceived.Broadcast(*Row);
+			}
 		}
 	});
 }
