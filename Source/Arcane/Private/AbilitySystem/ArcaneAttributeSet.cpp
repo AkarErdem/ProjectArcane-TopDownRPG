@@ -29,20 +29,6 @@ void UArcaneAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& 
 void UArcaneAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue)
 {
 	Super::PreAttributeChange(Attribute, NewValue);
-	if(Attribute == GetHealthAttribute())
-	{
-		NewValue = FMathf::Clamp(NewValue, 0.f, GetMaxHealth());
-	}
-
-	if(Attribute == GetManaAttribute())
-	{
-		NewValue = FMathf::Clamp(NewValue, 0.f, GetMaxMana());
-	}
-
-	if(Attribute == GetMaxHealthAttribute() || Attribute == GetMaxManaAttribute())
-	{
-		NewValue = FMathf::Max(0.f, NewValue);
-	}
 }
 
 void UArcaneAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)
@@ -52,6 +38,17 @@ void UArcaneAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCall
 	FEffectProperties Source;
 	FEffectProperties Target;
 	SetEffectProperties(Data, Source, Target);
+
+	const FGameplayAttribute& Attribute = Data.EvaluatedData.Attribute;
+	if(Attribute == GetHealthAttribute())
+	{
+		SetHealth(FMathf::Clamp(GetHealth(), 0.f, GetMaxHealth()));
+	}
+
+	if(Attribute == GetManaAttribute())
+	{
+		SetMana(FMathf::Clamp(GetMana(), 0.f, GetMaxMana()));
+	}
 }
 
 void UArcaneAttributeSet::OnRep_Health(const FGameplayAttributeData& OldHealth) const
