@@ -9,7 +9,7 @@
 
 UArcaneAttributeSet::UArcaneAttributeSet()
 {
-	InitHealth(10.f);
+	InitHealth(50.f);
 	InitMaxHealth(100.f);
 	InitMana(0.f);
 	InitMaxMana(100.f);
@@ -24,6 +24,11 @@ void UArcaneAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& 
 	DOREPLIFETIME_CONDITION_NOTIFY(UArcaneAttributeSet, MaxHealth, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UArcaneAttributeSet, Mana, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UArcaneAttributeSet, MaxMana, COND_None, REPNOTIFY_Always);
+
+	DOREPLIFETIME_CONDITION_NOTIFY(UArcaneAttributeSet, Strength, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UArcaneAttributeSet, Intelligence, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UArcaneAttributeSet, Defense, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UArcaneAttributeSet, Vitality, COND_None, REPNOTIFY_Always);
 }
 
 void UArcaneAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue)
@@ -51,25 +56,23 @@ void UArcaneAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCall
 	}
 }
 
-void UArcaneAttributeSet::OnRep_Health(const FGameplayAttributeData& OldHealth) const
-{
-	GAMEPLAYATTRIBUTE_REPNOTIFY(UArcaneAttributeSet, Health, OldHealth);
+#define ON_REP_ATTRIBUTE(AttributeName) \
+void UArcaneAttributeSet::OnRep_##AttributeName(const FGameplayAttributeData& Old##AttributeName) \
+{ \
+GAMEPLAYATTRIBUTE_REPNOTIFY(UArcaneAttributeSet, AttributeName, Old##AttributeName); \
 }
 
-void UArcaneAttributeSet::OnRep_MaxHealth(const FGameplayAttributeData& OldMaxHealth) const
-{
-	GAMEPLAYATTRIBUTE_REPNOTIFY(UArcaneAttributeSet, MaxHealth, OldMaxHealth);
-}
+ON_REP_ATTRIBUTE(Health);
+ON_REP_ATTRIBUTE(MaxHealth);
+ON_REP_ATTRIBUTE(Mana);
+ON_REP_ATTRIBUTE(MaxMana);
 
-void UArcaneAttributeSet::OnRep_Mana(const FGameplayAttributeData& OldMana) const
-{
-	GAMEPLAYATTRIBUTE_REPNOTIFY(UArcaneAttributeSet, Mana, OldMana);
-}
+ON_REP_ATTRIBUTE(Strength);
+ON_REP_ATTRIBUTE(Intelligence);
+ON_REP_ATTRIBUTE(Defense);
+ON_REP_ATTRIBUTE(Vitality);
 
-void UArcaneAttributeSet::OnRep_MaxMana(const FGameplayAttributeData& OldMaxMana) const
-{
-	GAMEPLAYATTRIBUTE_REPNOTIFY(UArcaneAttributeSet, MaxMana, OldMaxMana);
-}
+#undef ON_REP_ATTRIBUTE
 
 void UArcaneAttributeSet::SetEffectProperties(const FGameplayEffectModCallbackData& Data, FEffectProperties& Source,
                                               FEffectProperties& Target)

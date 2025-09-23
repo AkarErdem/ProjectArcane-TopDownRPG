@@ -48,33 +48,59 @@ public:
 	/** Called after a gameplay effect has already been applied. */
 	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;
 
-	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Health, Category = "Vital Attributes")
-	FGameplayAttributeData Health;
-	ATTRIBUTE_ACCESSORS(UArcaneAttributeSet, Health);
+	/*
+	 * Vital Attributes
+	 */
+	UFUNCTION()
+    void OnRep_Health(const FGameplayAttributeData& OldHealth);
+    UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Health, Category = "Vital Attributes")
+    FGameplayAttributeData Health;
+    ATTRIBUTE_ACCESSORS(UArcaneAttributeSet, Health);
 
-	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_MaxHealth, Category = "Vital Attributes")
-	FGameplayAttributeData MaxHealth;
-	ATTRIBUTE_ACCESSORS(UArcaneAttributeSet, MaxHealth);
+    UFUNCTION()
+    void OnRep_MaxHealth(const FGameplayAttributeData& OldMaxHealth);
+    UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_MaxHealth, Category = "Vital Attributes")
+    FGameplayAttributeData MaxHealth;
+    ATTRIBUTE_ACCESSORS(UArcaneAttributeSet, MaxHealth);
 
+	UFUNCTION()
+	void OnRep_Mana(const FGameplayAttributeData& OldMana);
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Mana, Category = "Vital Attributes")
 	FGameplayAttributeData Mana;
 	ATTRIBUTE_ACCESSORS(UArcaneAttributeSet, Mana);
 
+	UFUNCTION()
+	void OnRep_MaxMana(const FGameplayAttributeData& OldMaxMana);
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_MaxMana, Category = "Vital Attributes")
 	FGameplayAttributeData MaxMana;
 	ATTRIBUTE_ACCESSORS(UArcaneAttributeSet, MaxMana);
 
+	/*
+	* Primary Attributes
+	*/
 	UFUNCTION()
-	void OnRep_Health(const FGameplayAttributeData& OldHealth) const;
+	void OnRep_Strength(const FGameplayAttributeData& OldStrength);
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Strength, Category = "Primary Attributes")
+	FGameplayAttributeData Strength;
+	ATTRIBUTE_ACCESSORS(UArcaneAttributeSet, Strength);
 
 	UFUNCTION()
-	void OnRep_MaxHealth(const FGameplayAttributeData& OldMaxHealth) const;
+	void OnRep_Intelligence(const FGameplayAttributeData& OldIntelligence);
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Intelligence, Category = "Primary Attributes")
+	FGameplayAttributeData Intelligence;
+	ATTRIBUTE_ACCESSORS(UArcaneAttributeSet, Intelligence);
 
 	UFUNCTION()
-	void OnRep_Mana(const FGameplayAttributeData& OldMana) const;
+	void OnRep_Defense(const FGameplayAttributeData& OldDefense);
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Defense, Category = "Primary Attributes")
+	FGameplayAttributeData Defense;
+	ATTRIBUTE_ACCESSORS(UArcaneAttributeSet, Defense);
 
 	UFUNCTION()
-	void OnRep_MaxMana(const FGameplayAttributeData& OldMaxMana) const;
+	void OnRep_Vitality(const FGameplayAttributeData& OldVitality);
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Vitality, Category = "Primary Attributes")
+	FGameplayAttributeData Vitality;
+	ATTRIBUTE_ACCESSORS(UArcaneAttributeSet, Vitality);
 
 private:
 	static void SetEffectProperties(const FGameplayEffectModCallbackData& Data, FEffectProperties& Source, FEffectProperties& Target);
