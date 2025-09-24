@@ -4,10 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "AbilitySystemInterface.h"
-#include "AbilitySystem/ArcaneAttributeSet.h"
 #include "GameFramework/Character.h"
 #include "ArcaneCharacterBase.generated.h"
 
+class UGameplayEffect;
 class UArcaneAttributeSet;
 class UAttributeSet;
 class UArcaneAbilitySystemComponent;
@@ -27,8 +27,6 @@ public:
 	}
 
 protected:
-	virtual void BeginPlay() override;
-
 	UPROPERTY(EditAnywhere, Category="Combat")
 	TObjectPtr<USkeletalMeshComponent> Weapon;
 
@@ -36,7 +34,14 @@ protected:
 	TObjectPtr<UArcaneAbilitySystemComponent> AbilitySystemComponent;
 
 	UPROPERTY()
-	TObjectPtr<UArcaneAttributeSet> AttributeSet;
+	TObjectPtr<UAttributeSet> AttributeSet;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category="Attributes")
+	TSubclassOf<UGameplayEffect> DefaultPrimaryAttributes;
 
 	virtual void InitAbilityActorInfo();
+
+	virtual void InitPrimaryAttributes() const;
+
+	virtual void BeginPlay() override;
 };

@@ -2,6 +2,7 @@
 
 #include "Character/ArcaneEnemy.h"
 #include "AbilitySystem/ArcaneAbilitySystemComponent.h"
+#include "AbilitySystem/ArcaneAttributeSet.h"
 #include "Arcane/Arcane.h"
 
 AArcaneEnemy::AArcaneEnemy()

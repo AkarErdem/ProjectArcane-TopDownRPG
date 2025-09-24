@@ -50,6 +50,9 @@ void AArcaneHero::InitAbilityActorInfo()
 
 	AbilitySystemComponent->BindGameplayEffectDelegates();
 
+	// Init Attributes
+	InitPrimaryAttributes();
+
 	// Init HUD
 	// PlayerController only is not a nullptr if this is owned by this player
 	if(AArcanePlayerController* PlayerController = GetController<AArcanePlayerController>())
