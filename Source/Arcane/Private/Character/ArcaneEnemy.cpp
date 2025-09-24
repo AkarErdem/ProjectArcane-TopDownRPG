@@ -32,6 +32,8 @@ void AArcaneEnemy::InitAbilityActorInfo()
 	Super::InitAbilityActorInfo();
 	AbilitySystemComponent->InitAbilityActorInfo(this, this);
 	AbilitySystemComponent->BindGameplayEffectDelegates();
+
+	InitDefaultAttributes();
 }
 
 void AArcaneEnemy::HighlightActor()

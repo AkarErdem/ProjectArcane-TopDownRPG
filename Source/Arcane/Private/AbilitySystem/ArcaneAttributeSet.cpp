@@ -10,9 +10,7 @@
 UArcaneAttributeSet::UArcaneAttributeSet()
 {
 	InitHealth(50.f);
-	InitMaxHealth(100.f);
-	InitMana(0.f);
-	InitMaxMana(100.f);
+	InitMana(25.f);
 }
 
 void UArcaneAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
@@ -27,13 +25,17 @@ void UArcaneAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& 
 
 	DOREPLIFETIME_CONDITION_NOTIFY(UArcaneAttributeSet, Strength, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UArcaneAttributeSet, Intelligence, COND_None, REPNOTIFY_Always);
-	DOREPLIFETIME_CONDITION_NOTIFY(UArcaneAttributeSet, Defense, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UArcaneAttributeSet, Resilience, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UArcaneAttributeSet, Vitality, COND_None, REPNOTIFY_Always);
-}
 
-void UArcaneAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue)
-{
-	Super::PreAttributeChange(Attribute, NewValue);
+	DOREPLIFETIME_CONDITION_NOTIFY(UArcaneAttributeSet, Armor, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UArcaneAttributeSet, ArmorPenetration, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UArcaneAttributeSet, BlockChance, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UArcaneAttributeSet, CriticalHitChance, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UArcaneAttributeSet, CriticalHitDamage, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UArcaneAttributeSet, CriticalHitResistance, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UArcaneAttributeSet, HealthRegeneration, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UArcaneAttributeSet, ManaRegeneration, COND_None, REPNOTIFY_Always);
 }
 
 void UArcaneAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)
@@ -69,8 +71,17 @@ ON_REP_ATTRIBUTE(MaxMana);
 
 ON_REP_ATTRIBUTE(Strength);
 ON_REP_ATTRIBUTE(Intelligence);
-ON_REP_ATTRIBUTE(Defense);
+ON_REP_ATTRIBUTE(Resilience);
 ON_REP_ATTRIBUTE(Vitality);
+
+ON_REP_ATTRIBUTE(Armor);
+ON_REP_ATTRIBUTE(ArmorPenetration);
+ON_REP_ATTRIBUTE(BlockChance);
+ON_REP_ATTRIBUTE(CriticalHitChance);
+ON_REP_ATTRIBUTE(CriticalHitDamage);
+ON_REP_ATTRIBUTE(CriticalHitResistance);
+ON_REP_ATTRIBUTE(HealthRegeneration);
+ON_REP_ATTRIBUTE(ManaRegeneration);
 
 #undef ON_REP_ATTRIBUTE
 
