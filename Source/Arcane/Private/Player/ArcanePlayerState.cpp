@@ -2,6 +2,7 @@
 
 #include "Player/ArcanePlayerState.h"
 #include "AbilitySystem/ArcaneAbilitySystemComponent.h"
+#include "Net/UnrealNetwork.h"
 
 AArcanePlayerState::AArcanePlayerState()
 {
@@ -13,7 +14,16 @@ AArcanePlayerState::AArcanePlayerState()
 	SetNetUpdateFrequency(100.f);
 }
 
+void AArcanePlayerState::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(AArcanePlayerState, Level);
+}
+
 UAbilitySystemComponent* AArcanePlayerState::GetAbilitySystemComponent() const
 {
 	return AbilitySystemComponent;
 }
+
+void AArcanePlayerState::OnRep_Level(int32 OldLevel) { }

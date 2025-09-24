@@ -35,6 +35,14 @@ void AArcaneHero::OnRep_PlayerState()
 	InitAbilityActorInfo();
 }
 
+int32 AArcaneHero::GetCharacterLevel()
+{
+	const AArcanePlayerState* ArcanePlayerState = GetPlayerState<AArcanePlayerState>();
+	check(ArcanePlayerState);
+
+	return ArcanePlayerState->GetCharacterLevel();
+}
+
 void AArcaneHero::InitAbilityActorInfo()
 {
 	Super::InitAbilityActorInfo();

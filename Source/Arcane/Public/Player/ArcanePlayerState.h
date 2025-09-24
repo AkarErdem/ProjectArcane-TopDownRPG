@@ -19,8 +19,19 @@ class ARCANE_API AArcanePlayerState : public APlayerState, public IAbilitySystem
 public:
 	AArcanePlayerState();
 
+	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
+
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
-	FORCEINLINE UAttributeSet* GetAttributeSet() const { return AttributeSet; }
+
+	FORCEINLINE UAttributeSet* GetAttributeSet() const
+	{
+		return AttributeSet;
+	}
+
+	FORCEINLINE int32 GetCharacterLevel() const
+	{
+		return Level;
+	}
 
 protected:
 	UPROPERTY(VisibleAnywhere)
@@ -28,4 +39,11 @@ protected:
 
 	UPROPERTY()
 	TObjectPtr<UArcaneAttributeSet> AttributeSet;
+
+private:
+	UPROPERTY(VisibleAnywhere, ReplicatedUsing="OnRep_Level")
+	int32 Level = 1;
+
+	UFUNCTION()
+	void OnRep_Level(int32 OldLevel);
 };

@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "AbilitySystemInterface.h"
 #include "GameFramework/Character.h"
+#include "Interaction/CombatInterface.h"
 #include "ArcaneCharacterBase.generated.h"
 
 class UGameplayEffect;
@@ -13,7 +14,7 @@ class UAttributeSet;
 class UArcaneAbilitySystemComponent;
 
 UCLASS(Abstract)
-class ARCANE_API AArcaneCharacterBase : public ACharacter, public IAbilitySystemInterface
+class ARCANE_API AArcaneCharacterBase : public ACharacter, public IAbilitySystemInterface, public ICombatInterface
 {
 	GENERATED_BODY()
 
