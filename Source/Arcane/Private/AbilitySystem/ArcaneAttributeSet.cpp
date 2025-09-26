@@ -9,8 +9,6 @@
 
 UArcaneAttributeSet::UArcaneAttributeSet()
 {
-	InitHealth(50.f);
-	InitMana(25.f);
 }
 
 void UArcaneAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
