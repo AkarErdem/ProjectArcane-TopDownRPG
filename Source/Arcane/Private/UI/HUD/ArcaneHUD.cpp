@@ -12,14 +12,14 @@ void AArcaneHUD::Init##Name(APlayerController* PlayerController, APlayerState* P
 { \
 	checkf(Name##WidgetClass, TEXT("Name##WidgetClass uninitialized, fill out BP_ArcaneHUD.")); \
 	checkf(Name##WidgetControllerClass, TEXT("Name##WidgetControllerClass uninitialized, fill out BP_ArcaneHUD.")); \
- \
+\
+	Name##Widget = CreateWidget<UArcaneUserWidget>(GetWorld(), Name##WidgetClass); \
+\
 	const auto Data = FWidgetControllerData(PlayerController, PlayerState, AbilitySystemComponent, AttributeSet); \
 	U##Name##WidgetController* WidgetController = Get##Name##WidgetController(Data); \
- \
-	Name##Widget = CreateWidget<UArcaneUserWidget>(GetWorld(), Name##WidgetClass); \
+\
 	Name##Widget->SetWidgetController(WidgetController); \
 	WidgetController->BroadcastInitialValues(); \
- \
 	Name##Widget->AddToViewport(); \
 }
 

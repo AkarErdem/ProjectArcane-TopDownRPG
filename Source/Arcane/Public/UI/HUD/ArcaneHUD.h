@@ -56,7 +56,7 @@ private:
 	{
 		check(*ControllerClass); // Fail if class isn’t set in editor
 
-		if(!IsValid(Cached))
+		if(Cached == nullptr)
 		{
 			Cached = NewObject<TWidgetController>(this, ControllerClass);
 			check(Cached);

@@ -18,48 +18,13 @@ class ARCANE_API UArcaneAbilitySystemLibrary : public UBlueprintFunctionLibrary
 	GENERATED_BODY()
 
 public:
-	UFUNCTION(BlueprintPure, Category="ArcaneAbilitySystemLibrary|WidgetController", meta = (WorldContext = "WorldContextObject"))
-	static UArcaneWidgetController* GetArcaneOverlayWidgetController(const UObject* WorldContextObject)
-	{
-		if(const APlayerController* PC = WorldContextObject->GetWorld()->GetFirstPlayerController())
-		{
-			if(AArcaneHUD* ArcaneHUD = Cast<AArcaneHUD>(PC->GetHUD()))
-			{
-				if(FWidgetControllerData WidgetControllerData; GetWidgetControllerData(WorldContextObject, WidgetControllerData))
-				{
-					return ArcaneHUD->GetOverlayWidgetController(WidgetControllerData);
-				}
-			}
-		}
-		return nullptr;
-	}
 
 	UFUNCTION(BlueprintPure, Category="ArcaneAbilitySystemLibrary|WidgetController", meta = (WorldContext = "WorldContextObject"))
-	static UArcaneWidgetController* GetAttributeMenuWidgetController(const UObject* WorldContextObject)
-	{
-		if(const APlayerController* PC = WorldContextObject->GetWorld()->GetFirstPlayerController())
-		{
-			if(AArcaneHUD* ArcaneHUD = Cast<AArcaneHUD>(PC->GetHUD()))
-			{
-				if(FWidgetControllerData WidgetControllerData; GetWidgetControllerData(WorldContextObject, WidgetControllerData))
-				{
-					return ArcaneHUD->GetAttributeMenuWidgetController(WidgetControllerData);
-				}
-			}
-		}
-		return nullptr;
-	}
+	static bool MakeWidgetControllerData(const UObject* WorldContextObject, FWidgetControllerData& OutWidgetControllerData, AArcaneHUD*& OutArcaneHUD);
 
-	[[nodiscard]] static bool GetWidgetControllerData(const UObject* WorldContextObject, OUT FWidgetControllerData& OutData)
-	{
-		if(APlayerController* PC = WorldContextObject->GetWorld()->GetFirstPlayerController())
-		{
-			AArcanePlayerState* PS = PC->GetPlayerState<AArcanePlayerState>();
-			UAbilitySystemComponent* ASC = PS->GetAbilitySystemComponent();
-			UAttributeSet* AS = PS->GetAttributeSet();
-			OutData = FWidgetControllerData(PC, PS, ASC, AS);
-			return true;
-		}
-		return false;
-	}
+	UFUNCTION(BlueprintPure, Category="ArcaneAbilitySystemLibrary|WidgetController", meta = (WorldContext = "WorldContextObject"))
+	static UOverlayWidgetController* GetOverlayWidgetController(const UObject* WorldContextObject);
+
+	UFUNCTION(BlueprintPure, Category="ArcaneAbilitySystemLibrary|WidgetController", meta = (WorldContext = "WorldContextObject"))
+	static UAttributeMenuWidgetController* GetAttributeMenuWidgetController(const UObject* WorldContextObject);
 };

@@ -26,9 +26,7 @@ struct FWidgetControllerData
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<UAttributeSet> AttributeSet = nullptr;
 
-	FWidgetControllerData()
-	{
-	}
+	FWidgetControllerData() { }
 
 	FWidgetControllerData(
 		APlayerController* InPlayerController,
@@ -38,9 +36,7 @@ struct FWidgetControllerData
 		PlayerController(InPlayerController),
 		PlayerState(InPlayerState),
 		AbilitySystemComponent(InAbilitySystemComponent),
-		AttributeSet(InAttributeSet)
-	{
-	}
+		AttributeSet(InAttributeSet) { }
 };
 
 UCLASS()
@@ -52,6 +48,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetWidgetControllerData(const FWidgetControllerData& WidgetControllerData);
 
+	UFUNCTION(BlueprintCallable)
 	virtual void BroadcastInitialValues();
 
 	virtual void BindCallbacksToDependencies();
