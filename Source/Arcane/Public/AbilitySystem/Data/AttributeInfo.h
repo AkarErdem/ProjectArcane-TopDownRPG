@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "AttributeSet.h"
 #include "GameplayTagContainer.h"
 #include "Engine/DataAsset.h"
 #include "AttributeInfo.generated.h"
@@ -24,7 +25,8 @@ struct FArcaneAttributeInfo
 	UPROPERTY(BlueprintReadOnly)
 	float AttributeValue = 0.f;
 
-	FArcaneAttributeInfo() = default;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	FGameplayAttribute AttributeGetter = FGameplayAttribute();
 };
 
 UCLASS()
@@ -35,6 +37,11 @@ class ARCANE_API UAttributeInfo : public UDataAsset
 public:
 	FArcaneAttributeInfo FindAttributeInfoForTag(const FGameplayTag& AttributeTag, const bool bLogNotFound = false) const;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
-	TMap<FGameplayTag, FArcaneAttributeInfo> AttributeInformation;
+#if WITH_EDITOR
+	UFUNCTION(Category="Populate Attribute Info", CallInEditor)
+	void PopulateDataAsset();
+#endif
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta=(TitleProperty="AttributeName"))
+	TArray<FArcaneAttributeInfo> AttributeInformation;
 };

@@ -4,12 +4,11 @@
 #include "AbilitySystemBlueprintLibrary.h"
 #include "GameplayEffectExtension.h"
 #include "MathUtil.h"
+#include "Game/ArcaneGameplayTags.h"
 #include "GameFramework/Character.h"
 #include "Net/UnrealNetwork.h"
 
-UArcaneAttributeSet::UArcaneAttributeSet()
-{
-}
+UArcaneAttributeSet::UArcaneAttributeSet() { }
 
 void UArcaneAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {

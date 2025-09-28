@@ -6,6 +6,7 @@
 #include "UObject/Object.h"
 #include "ArcaneWidgetController.generated.h"
 
+struct FGameplayTag;
 class UAttributeSet;
 class UAbilitySystemComponent;
 

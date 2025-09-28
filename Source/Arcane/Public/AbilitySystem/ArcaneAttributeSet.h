@@ -13,6 +13,8 @@
 	GAMEPLAYATTRIBUTE_VALUE_SETTER(PropertyName) \
 	GAMEPLAYATTRIBUTE_VALUE_INITTER(PropertyName)
 
+DECLARE_DELEGATE_RetVal(FGameplayAttribute, FAttributeDelegate);
+
 USTRUCT()
 struct FEffectProperties
 {
@@ -52,15 +54,15 @@ public:
 	 */
 	UFUNCTION()
 	void OnRep_Health(const FGameplayAttributeData& OldHealth);
-    UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Health, Category="Vital Attributes")
-    FGameplayAttributeData Health;
-    ATTRIBUTE_ACCESSORS(UArcaneAttributeSet, Health);
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Health, Category="Vital Attributes")
+	FGameplayAttributeData Health;
+	ATTRIBUTE_ACCESSORS(UArcaneAttributeSet, Health);
 
-    UFUNCTION()
-    void OnRep_MaxHealth(const FGameplayAttributeData& OldMaxHealth);
-    UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_MaxHealth, Category="Vital Attributes")
-    FGameplayAttributeData MaxHealth;
-    ATTRIBUTE_ACCESSORS(UArcaneAttributeSet, MaxHealth);
+	UFUNCTION()
+	void OnRep_MaxHealth(const FGameplayAttributeData& OldMaxHealth);
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_MaxHealth, Category="Vital Attributes")
+	FGameplayAttributeData MaxHealth;
+	ATTRIBUTE_ACCESSORS(UArcaneAttributeSet, MaxHealth);
 
 	UFUNCTION()
 	void OnRep_Mana(const FGameplayAttributeData& OldMana);

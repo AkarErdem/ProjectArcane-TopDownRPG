@@ -7,112 +7,123 @@
  *
  * Contains all gameplay tags used in the game
  */
-namespace ArcaneGameplayTags
+
+// Primary
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attributes_Primary_Strength);
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attributes_Primary_Strength);
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attributes_Primary_Intelligence);
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attributes_Primary_Resilience);
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attributes_Primary_Vitality);
+
+// Secondary
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attributes_Secondary_Armor);
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attributes_Secondary_ArmorPenetration);
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attributes_Secondary_BlockChance);
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attributes_Secondary_CriticalHitChance);
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attributes_Secondary_CriticalHitDamage);
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attributes_Secondary_CriticalHitResistance);
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attributes_Secondary_HealthRegeneration);
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attributes_Secondary_ManaRegeneration);
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attributes_Secondary_MaxHealth);
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attributes_Secondary_MaxMana);
+
+// Vitals
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attributes_Vitals_Health);
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attributes_Vitals_Mana);
+
+/*
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attributes_Meta_IncomingXP);
+
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_LMB);
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_RMB);
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_1);
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_2);
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_3);
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_4);
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_Passive_1);
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_Passive_2);
+
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(Damage);
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(Damage_Fire);
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(Damage_Lightning);
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(Damage_Arcane);
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(Damage_Physical);
+
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attributes_Resistance_Fire);
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attributes_Resistance_Lightning);
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attributes_Resistance_Arcane);
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attributes_Resistance_Physical);
+
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(Debuff_Burn);
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(Debuff_Stun);
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(Debuff_Arcane);
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(Debuff_Physical);
+
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(Debuff_Chance);
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(Debuff_Damage);
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(Debuff_Duration);
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(Debuff_Frequency);
+
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(Abilities_None);
+
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(Abilities_Attack);
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(Abilities_Summon);
+
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(Abilities_HitReact);
+
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(Abilities_Status_Locked);
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(Abilities_Status_Eligible);
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(Abilities_Status_Unlocked);
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(Abilities_Status_Equipped);
+
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(Abilities_Type_Offensive);
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(Abilities_Type_Passive);
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(Abilities_Type_None);
+
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(Abilities_Fire_FireBolt);
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(Abilities_Fire_FireBlast);
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(Abilities_Lightning_Electrocute);
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(Abilities_Arcane_ArcaneShards);
+
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(Abilities_Passive_HaloOfProtection);
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(Abilities_Passive_LifeSiphon);
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(Abilities_Passive_ManaSiphon);
+
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(Cooldown_Fire_FireBolt);
+
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(CombatSocket_Weapon);
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(CombatSocket_RightHand);
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(CombatSocket_LeftHand);
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(CombatSocket_Tail);
+
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(Montage_Attack_1);
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(Montage_Attack_2);
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(Montage_Attack_3);
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(Montage_Attack_4);
+
+TMap<FGameplayTag, FGameplayTag> DamageTypesToResistances);
+TMap<FGameplayTag, FGameplayTag> DamageTypesToDebuffs);
+
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(Effects_HitReact);
+
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Block_InputPressed);
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Block_InputHeld);
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Block_InputReleased);
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Block_CursorTrace);
+
+UE_DECLARE_GAMEPLAY_TAG_EXTERN(GameplayCue_FireBlast);*/
+
+struct FArcaneGameplayTags
 {
-	// Primary
-	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attributes_Primary_Strength);
-	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attributes_Primary_Strength);
-	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attributes_Primary_Intelligence);
-	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attributes_Primary_Resilience);
-	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attributes_Primary_Vigor);
+	static const FArcaneGameplayTags& Get()
+	{
+		return GameplayTags;
+	}
 
-	// Secondary
-	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attributes_Secondary_Armor);
-	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attributes_Secondary_ArmorPenetration);
-	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attributes_Secondary_BlockChance);
-	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attributes_Secondary_CriticalHitChance);
-	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attributes_Secondary_CriticalHitDamage);
-	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attributes_Secondary_CriticalHitResistance);
-	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attributes_Secondary_HealthRegeneration);
-	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attributes_Secondary_ManaRegeneration);
-	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attributes_Secondary_MaxHealth);
-	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attributes_Secondary_MaxMana);
+	static void Initialize();
 
-	// Vitals
-	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attributes_Vitals_Health);
-	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attributes_Vitals_Mana);
+	FGameplayTagContainer ArcaneTagsContainer = FGameplayTagContainer();
 
-	/*
-	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attributes_Meta_IncomingXP);
-
-	UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_LMB);
-	UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_RMB);
-	UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_1);
-	UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_2);
-	UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_3);
-	UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_4);
-	UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_Passive_1);
-	UE_DECLARE_GAMEPLAY_TAG_EXTERN(InputTag_Passive_2);
-
-	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Damage);
-	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Damage_Fire);
-	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Damage_Lightning);
-	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Damage_Arcane);
-	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Damage_Physical);
-
-	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attributes_Resistance_Fire);
-	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attributes_Resistance_Lightning);
-	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attributes_Resistance_Arcane);
-	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Attributes_Resistance_Physical);
-
-	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Debuff_Burn);
-	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Debuff_Stun);
-	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Debuff_Arcane);
-	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Debuff_Physical);
-
-	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Debuff_Chance);
-	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Debuff_Damage);
-	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Debuff_Duration);
-	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Debuff_Frequency);
-
-	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Abilities_None);
-
-	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Abilities_Attack);
-	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Abilities_Summon);
-
-	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Abilities_HitReact);
-
-	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Abilities_Status_Locked);
-	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Abilities_Status_Eligible);
-	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Abilities_Status_Unlocked);
-	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Abilities_Status_Equipped);
-
-	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Abilities_Type_Offensive);
-	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Abilities_Type_Passive);
-	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Abilities_Type_None);
-
-	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Abilities_Fire_FireBolt);
-	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Abilities_Fire_FireBlast);
-	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Abilities_Lightning_Electrocute);
-	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Abilities_Arcane_ArcaneShards);
-
-	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Abilities_Passive_HaloOfProtection);
-	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Abilities_Passive_LifeSiphon);
-	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Abilities_Passive_ManaSiphon);
-
-	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Cooldown_Fire_FireBolt);
-
-	UE_DECLARE_GAMEPLAY_TAG_EXTERN(CombatSocket_Weapon);
-	UE_DECLARE_GAMEPLAY_TAG_EXTERN(CombatSocket_RightHand);
-	UE_DECLARE_GAMEPLAY_TAG_EXTERN(CombatSocket_LeftHand);
-	UE_DECLARE_GAMEPLAY_TAG_EXTERN(CombatSocket_Tail);
-
-	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Montage_Attack_1);
-	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Montage_Attack_2);
-	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Montage_Attack_3);
-	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Montage_Attack_4);
-
-	TMap<FGameplayTag, FGameplayTag> DamageTypesToResistances);
-	TMap<FGameplayTag, FGameplayTag> DamageTypesToDebuffs);
-
-	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Effects_HitReact);
-
-	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Block_InputPressed);
-	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Block_InputHeld);
-	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Block_InputReleased);
-	UE_DECLARE_GAMEPLAY_TAG_EXTERN(Player_Block_CursorTrace);
-
-	UE_DECLARE_GAMEPLAY_TAG_EXTERN(GameplayCue_FireBlast);*/
-
-	extern const TMap<FGameplayTag, FGameplayTag> Map;
-}
+private:
+	static FArcaneGameplayTags GameplayTags;
+};

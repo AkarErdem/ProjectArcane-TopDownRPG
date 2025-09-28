@@ -6,8 +6,6 @@
 
 void UOverlayWidgetController::BroadcastInitialValues()
 {
-	Super::BroadcastInitialValues();
-
 	const UArcaneAttributeSet* ArcaneAttributeSet = CastChecked<UArcaneAttributeSet>(AttributeSet);
 	OnHealthChanged.Broadcast(ArcaneAttributeSet->GetHealth());
 	OnMaxHealthChanged.Broadcast(ArcaneAttributeSet->GetMaxHealth());
@@ -17,8 +15,6 @@ void UOverlayWidgetController::BroadcastInitialValues()
 
 void UOverlayWidgetController::BindCallbacksToDependencies()
 {
-	Super::BindCallbacksToDependencies();
-
 	const UArcaneAttributeSet* ArcaneAttributeSet = CastChecked<UArcaneAttributeSet>(AttributeSet);
 
 #define BIND_ATTRIBUTE(AttributeName, ArcaneAttributeSet) \
