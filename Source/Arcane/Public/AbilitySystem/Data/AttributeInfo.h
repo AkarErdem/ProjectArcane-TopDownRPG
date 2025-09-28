@@ -13,6 +13,9 @@ struct FArcaneAttributeInfo
 	GENERATED_BODY()
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	FGameplayTag AttributeTag = FGameplayTag();
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	FText AttributeName = FText();
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
@@ -22,9 +25,6 @@ struct FArcaneAttributeInfo
 	float AttributeValue = 0.f;
 
 	FArcaneAttributeInfo() = default;
-
-	FArcaneAttributeInfo(const FText& InName, const FText& InDesc, const float InValue = 0.f)
-		: AttributeName(InName), AttributeDescription(InDesc), AttributeValue(InValue) { }
 };
 
 UCLASS()
