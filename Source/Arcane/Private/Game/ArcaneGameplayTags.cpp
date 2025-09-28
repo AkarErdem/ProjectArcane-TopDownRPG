@@ -24,7 +24,7 @@ namespace ArcaneGameplayTags
 
 	// Vitals
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Attributes_Vitals_Health, "Attributes.Vitals.Health", "Amount of damage a character can take before death.");
-	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Attributes_Vitals_Mana, "Attributes.Vitals.Mana", "Current mana value.");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Attributes_Vitals_Mana, "Attributes.Vitals.Mana", "Used to cast spells.");
 
 	const TMap<FGameplayTag, FGameplayTag> Map =
 	{

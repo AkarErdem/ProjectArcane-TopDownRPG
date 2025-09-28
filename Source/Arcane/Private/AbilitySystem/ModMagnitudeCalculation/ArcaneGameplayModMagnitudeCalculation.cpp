@@ -40,6 +40,6 @@ float UArcaneGameplayModMagnitudeCalculation::CalculateBaseMagnitude_Implementat
 		}
 	}
 
-	// BaseValue + Coefficient1*Attribute1 ... + LevelMultiplier * CharacterLevel
+	// BaseValue + Coefficient1 * Attribute1 ... + LevelMultiplier * CharacterLevel
 	return BaseValue + AttributeContribution + LevelMultiplier * CharacterLevel;
 }
