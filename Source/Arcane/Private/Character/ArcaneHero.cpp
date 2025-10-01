@@ -25,6 +25,7 @@ void AArcaneHero::PossessedBy(AController* NewController)
 
 	// GAS init (server side)
 	InitAbilityActorInfo();
+	AddCharacterAbilities();
 }
 
 void AArcaneHero::OnRep_PlayerState()

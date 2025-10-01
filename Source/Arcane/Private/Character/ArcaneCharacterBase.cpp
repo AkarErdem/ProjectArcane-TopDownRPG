@@ -23,6 +23,17 @@ void AArcaneCharacterBase::BeginPlay()
 	Super::BeginPlay();
 }
 
+void AArcaneCharacterBase::AddCharacterAbilities() const
+{
+	UArcaneAbilitySystemComponent* ArcaneASC = Cast<UArcaneAbilitySystemComponent>(GetAbilitySystemComponent());
+	if (!HasAuthority())
+	{
+		return;
+	}
+
+	ArcaneASC->AddCharacterAbilities(StartupAbilities);
+}
+
 void AArcaneCharacterBase::InitAbilityActorInfo() { }
 
 void AArcaneCharacterBase::ApplyEffectToSelf(const TSubclassOf<UGameplayEffect> GameplayEffectClass, const float Level) const

@@ -8,6 +8,7 @@
 #include "Interaction/CombatInterface.h"
 #include "ArcaneCharacterBase.generated.h"
 
+class UGameplayAbility;
 class UGameplayEffect;
 class UArcaneAttributeSet;
 class UAttributeSet;
@@ -53,4 +54,10 @@ protected:
 	virtual void InitAbilityActorInfo();
 
 	virtual void BeginPlay() override;
+
+	void AddCharacterAbilities() const;
+
+private:
+	UPROPERTY(EditAnywhere, Category="Abilities")
+	TArray<TSubclassOf<UGameplayAbility>> StartupAbilities;
 };
