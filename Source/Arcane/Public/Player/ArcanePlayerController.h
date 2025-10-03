@@ -6,6 +6,8 @@
 #include "GameFramework/PlayerController.h"
 #include "ArcanePlayerController.generated.h"
 
+struct FGameplayTag;
+class UArcaneInputConfig;
 class IHighlightInterface;
 class UInputMappingContext;
 class UInputAction;
@@ -36,4 +38,11 @@ private:
 
 	void Move(const FInputActionValue& InputActionValue);
 	void CursorTrace();
+
+	UPROPERTY(EditDefaultsOnly, Category="Input")
+	TObjectPtr<UArcaneInputConfig> InputConfig;
+
+	void AbilityInputTagPressed(FGameplayTag InputTag);
+	void AbilityInputTagReleased(FGameplayTag InputTag);
+	void AbilityInputTagHeld(FGameplayTag InputTag);
 };

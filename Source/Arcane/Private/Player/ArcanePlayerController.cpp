@@ -1,8 +1,8 @@
 ﻿// Copyright (c) 2025 Erdem Akar
 
 #include "Player/ArcanePlayerController.h"
-#include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "Input/ArcaneInputComponent.h"
 #include "Interaction/HighlightInterface.h"
 
 AArcanePlayerController::AArcanePlayerController()
@@ -33,8 +33,10 @@ void AArcanePlayerController::SetupInputComponent()
 {
 	Super::SetupInputComponent();
 
-	UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(InputComponent);
-	EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this,  &AArcanePlayerController::Move);
+	UArcaneInputComponent* ArcaneInputComponent = CastChecked<UArcaneInputComponent>(InputComponent);
+	ArcaneInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this,  &AArcanePlayerController::Move);
+
+	ArcaneInputComponent->BindAbilityActions(InputConfig, this, &ThisClass::AbilityInputTagPressed, &ThisClass::AbilityInputTagReleased, &ThisClass::AbilityInputTagHeld);
 }
 
 void AArcanePlayerController::Move(const FInputActionValue& InputActionValue)
@@ -107,4 +109,20 @@ void AArcanePlayerController::CursorTrace()
 	{
 		ClearHighlight();
 	}
+}
+
+void AArcanePlayerController::AbilityInputTagPressed(FGameplayTag InputTag)
+{
+	GEngine->AddOnScreenDebugMessage(1, 3.f, FColor::Red, *InputTag.ToString());
+}
+
+void AArcanePlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
+{
+	GEngine->AddOnScreenDebugMessage(2, 3.f, FColor::Red, *InputTag.ToString());
+
+}
+
+void AArcanePlayerController::AbilityInputTagHeld(FGameplayTag InputTag)
+{
+	GEngine->AddOnScreenDebugMessage(3, 3.f, FColor::Red, *InputTag.ToString());
 }
