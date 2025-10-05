@@ -1,7 +1,9 @@
 ﻿// Copyright (c) 2025 Erdem Akar
 
 #include "Player/ArcanePlayerController.h"
+#include "AbilitySystemBlueprintLibrary.h"
 #include "EnhancedInputSubsystems.h"
+#include "AbilitySystem/ArcaneAbilitySystemComponent.h"
 #include "Input/ArcaneInputComponent.h"
 #include "Interaction/HighlightInterface.h"
 
@@ -15,7 +17,7 @@ void AArcanePlayerController::BeginPlay()
 	Super::BeginPlay();
 	check(ArcaneInputMappingContext);
 
-	if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer()))
+	if(UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer()))
 	{
 		Subsystem->AddMappingContext(ArcaneInputMappingContext, 0);
 	}
@@ -34,7 +36,7 @@ void AArcanePlayerController::SetupInputComponent()
 	Super::SetupInputComponent();
 
 	UArcaneInputComponent* ArcaneInputComponent = CastChecked<UArcaneInputComponent>(InputComponent);
-	ArcaneInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this,  &AArcanePlayerController::Move);
+	ArcaneInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AArcanePlayerController::Move);
 
 	ArcaneInputComponent->BindAbilityActions(InputConfig, this, &ThisClass::AbilityInputTagPressed, &ThisClass::AbilityInputTagReleased, &ThisClass::AbilityInputTagHeld);
 }
@@ -49,7 +51,7 @@ void AArcanePlayerController::Move(const FInputActionValue& InputActionValue)
 	const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
 	const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
 
-	if (APawn* ControlledPawn = GetPawn<APawn>())
+	if(APawn* ControlledPawn = GetPawn<APawn>())
 	{
 		ControlledPawn->AddMovementInput(ForwardDirection, InputAxisVector.Y);
 		ControlledPawn->AddMovementInput(RightDirection, InputAxisVector.X);
@@ -67,7 +69,7 @@ void AArcanePlayerController::CursorTrace()
 	// Unhighlight
 	auto ClearHighlight = [this]
 	{
-		if (HighlightedInterface)
+		if(HighlightedInterface)
 		{
 			HighlightedInterface->UnHighlightActor();
 			UE_LOG(LogTemp, Display, TEXT("%s clear"), *HighlightedInterface.GetObject()->GetName());
@@ -86,16 +88,16 @@ void AArcanePlayerController::CursorTrace()
 
 	FHitResult CursorHit;
 	GetHitResultUnderCursor(ECC_Visibility, /*bTraceComplex*/ false, CursorHit);
-	if (!CursorHit.bBlockingHit)
+	if(!CursorHit.bBlockingHit)
 	{
 		ClearHighlight();
 		return;
 	}
 
 	AActor* HighlightedActor = CursorHit.GetActor();
-	if (IHighlightInterface* HighlightedPtr = Cast<IHighlightInterface>(HighlightedActor))
+	if(IHighlightInterface* HighlightedPtr = Cast<IHighlightInterface>(HighlightedActor))
 	{
-		if (HighlightedInterface && HighlightedActor == HighlightedInterface.GetObject())
+		if(HighlightedInterface && HighlightedActor == HighlightedInterface.GetObject())
 		{
 			return;
 		}
@@ -113,16 +115,32 @@ void AArcanePlayerController::CursorTrace()
 
 void AArcanePlayerController::AbilityInputTagPressed(FGameplayTag InputTag)
 {
-	GEngine->AddOnScreenDebugMessage(1, 3.f, FColor::Red, *InputTag.ToString());
+	// GEngine->AddOnScreenDebugMessage(1, 3.f, FColor::Red, *InputTag.ToString());
 }
 
 void AArcanePlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 {
-	GEngine->AddOnScreenDebugMessage(2, 3.f, FColor::Red, *InputTag.ToString());
-
+	if(GetASC() == nullptr)
+	{
+		return;
+	}
+	GetASC()->AbilityInputTagReleased(InputTag);
 }
 
 void AArcanePlayerController::AbilityInputTagHeld(FGameplayTag InputTag)
 {
-	GEngine->AddOnScreenDebugMessage(3, 3.f, FColor::Red, *InputTag.ToString());
+	if(GetASC() == nullptr)
+	{
+		return;
+	}
+	GetASC()->AbilityInputTagHeld(InputTag);
+}
+
+UArcaneAbilitySystemComponent* AArcanePlayerController::GetASC()
+{
+	if(ArcaneAbilitySystemComponent == nullptr)
+	{
+		ArcaneAbilitySystemComponent = Cast<UArcaneAbilitySystemComponent>(UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetPawn<APawn>()));
+	}
+	return ArcaneAbilitySystemComponent;
 }

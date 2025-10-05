@@ -6,12 +6,13 @@
 #include "GameFramework/PlayerController.h"
 #include "ArcanePlayerController.generated.h"
 
-struct FGameplayTag;
+class UArcaneAbilitySystemComponent;
 class UArcaneInputConfig;
 class IHighlightInterface;
 class UInputMappingContext;
 class UInputAction;
 struct FInputActionValue;
+struct FGameplayTag;
 
 UCLASS()
 class ARCANE_API AArcanePlayerController : public APlayerController
@@ -41,6 +42,11 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, Category="Input")
 	TObjectPtr<UArcaneInputConfig> InputConfig;
+
+	UPROPERTY()
+	TObjectPtr<UArcaneAbilitySystemComponent> ArcaneAbilitySystemComponent;
+
+	UArcaneAbilitySystemComponent* GetASC();
 
 	void AbilityInputTagPressed(FGameplayTag InputTag);
 	void AbilityInputTagReleased(FGameplayTag InputTag);
