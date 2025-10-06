@@ -3,13 +3,18 @@
 #include "Player/ArcanePlayerController.h"
 #include "AbilitySystemBlueprintLibrary.h"
 #include "EnhancedInputSubsystems.h"
+#include "NavigationPath.h"
+#include "NavigationSystem.h"
 #include "AbilitySystem/ArcaneAbilitySystemComponent.h"
+#include "Components/SplineComponent.h"
+#include "Game/ArcaneGameplayTags.h"
 #include "Input/ArcaneInputComponent.h"
 #include "Interaction/HighlightInterface.h"
 
 AArcanePlayerController::AArcanePlayerController()
 {
 	bReplicates = true;
+	PathSpline = CreateDefaultSubobject<USplineComponent>("PathSpline");
 }
 
 void AArcanePlayerController::BeginPlay()
@@ -62,6 +67,8 @@ void AArcanePlayerController::PlayerTick(float DeltaTime)
 {
 	Super::PlayerTick(DeltaTime);
 	CursorTrace();
+
+	AutoRun();
 }
 
 void AArcanePlayerController::CursorTrace()
@@ -115,25 +122,92 @@ void AArcanePlayerController::CursorTrace()
 
 void AArcanePlayerController::AbilityInputTagPressed(FGameplayTag InputTag)
 {
-	// GEngine->AddOnScreenDebugMessage(1, 3.f, FColor::Red, *InputTag.ToString());
+	if(InputTag.MatchesTagExact(Inputs_Tag_LMB))
+	{
+		bIsTargeting = HighlightedInterface ? true : false;
+		bAutoRunning = false;
+	}
+	if (GetASC()) GetASC()->AbilityInputTagPressed(InputTag);
 }
 
 void AArcanePlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 {
-	if(GetASC() == nullptr)
+	if(!InputTag.MatchesTagExact(Inputs_Tag_LMB) || bIsTargeting)
 	{
+		if(GetASC())
+		{
+			GetASC()->AbilityInputTagReleased(InputTag);
+		}
 		return;
 	}
-	GetASC()->AbilityInputTagReleased(InputTag);
+
+	if(const APawn* ControlledPawn = GetPawn(); FollowTime <= ShortPressThreshold && ControlledPawn)
+	{
+		if(UNavigationPath* NavPath = UNavigationSystemV1::FindPathToLocationSynchronously(this, ControlledPawn->GetActorLocation(), CachedDestination))
+		{
+			PathSpline->ClearSplinePoints(false);
+			for(FVector Point : NavPath->PathPoints)
+			{
+				PathSpline->AddSplinePoint(Point, ESplineCoordinateSpace::World, false);
+				DrawDebugSphere(GetWorld(), Point, 8.f, 8, FColor::Green, false, 5.f);
+			}
+			PathSpline->UpdateSpline();
+
+			if(!NavPath->PathPoints.IsEmpty())
+			{
+				CachedDestination = NavPath->PathPoints.Last();
+				bAutoRunning = true;
+			}
+		}
+
+		FollowTime = 0.f;
+		bIsTargeting = false;
+	}
 }
 
 void AArcanePlayerController::AbilityInputTagHeld(FGameplayTag InputTag)
 {
-	if(GetASC() == nullptr)
+	if(!InputTag.MatchesTagExact(Inputs_Tag_LMB) || bIsTargeting)
+	{
+		if(GetASC())
+		{
+			GetASC()->AbilityInputTagHeld(InputTag);
+		}
+		return;
+	}
+
+	FollowTime += GetWorld()->GetDeltaSeconds();
+
+	if(FHitResult Hit; GetHitResultUnderCursor(ECC_Visibility, false, Hit))
+	{
+		CachedDestination = Hit.ImpactPoint;
+	}
+
+	if(APawn* ControlledPawn = GetPawn())
+	{
+		const FVector WorldDirection = (CachedDestination - ControlledPawn->GetActorLocation()).GetSafeNormal();
+		ControlledPawn->AddMovementInput(WorldDirection);
+	}
+}
+
+void AArcanePlayerController::AutoRun()
+{
+	if(!bAutoRunning)
 	{
 		return;
 	}
-	GetASC()->AbilityInputTagHeld(InputTag);
+
+	if(APawn* ControlledPawn = GetPawn())
+	{
+		const FVector LocationOnSpline = PathSpline->FindLocationClosestToWorldLocation(ControlledPawn->GetActorLocation(), ESplineCoordinateSpace::World);
+		const FVector Direction = PathSpline->FindDirectionClosestToWorldLocation(LocationOnSpline, ESplineCoordinateSpace::World);
+		ControlledPawn->AddMovementInput(Direction);
+
+		if(const float DistanceToDestination = (LocationOnSpline - CachedDestination).Length(); DistanceToDestination <= AutoRunAcceptanceRadius)
+		{
+			bAutoRunning = false;
+		}
+	}
 }
 
 UArcaneAbilitySystemComponent* AArcanePlayerController::GetASC()

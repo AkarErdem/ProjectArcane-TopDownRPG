@@ -46,33 +46,29 @@ void FArcaneGameplayTags::Initialize()
 {
 	GameplayTags.ArcaneTagsContainer.Reset();
 
-#define ADD_TAG_TO_CONTAINER(NameOne, NameTwo, NameThree) GameplayTags.ArcaneTagsContainer.AddTag(NameOne##_##NameTwo##_##NameThree);
+	 GameplayTags.ArcaneTagsContainer.AddTag(Attributes_Primary_Strength);
+	 GameplayTags.ArcaneTagsContainer.AddTag(Attributes_Primary_Intelligence);
+	 GameplayTags.ArcaneTagsContainer.AddTag(Attributes_Primary_Resilience);
+	 GameplayTags.ArcaneTagsContainer.AddTag(Attributes_Primary_Vitality);
 
-	ADD_TAG_TO_CONTAINER(Attributes, Primary, Strength)
-	ADD_TAG_TO_CONTAINER(Attributes, Primary, Intelligence)
-	ADD_TAG_TO_CONTAINER(Attributes, Primary, Resilience)
-	ADD_TAG_TO_CONTAINER(Attributes, Primary, Vitality)
+	 GameplayTags.ArcaneTagsContainer.AddTag(Attributes_Secondary_Armor);
+	 GameplayTags.ArcaneTagsContainer.AddTag(Attributes_Secondary_ArmorPenetration);
+	 GameplayTags.ArcaneTagsContainer.AddTag(Attributes_Secondary_BlockChance);
+	 GameplayTags.ArcaneTagsContainer.AddTag(Attributes_Secondary_CriticalHitChance);
+	 GameplayTags.ArcaneTagsContainer.AddTag(Attributes_Secondary_CriticalHitDamage);
+	 GameplayTags.ArcaneTagsContainer.AddTag(Attributes_Secondary_CriticalHitResistance);
+	 GameplayTags.ArcaneTagsContainer.AddTag(Attributes_Secondary_HealthRegeneration);
+	 GameplayTags.ArcaneTagsContainer.AddTag(Attributes_Secondary_ManaRegeneration);
+	 GameplayTags.ArcaneTagsContainer.AddTag(Attributes_Secondary_MaxHealth);
+	 GameplayTags.ArcaneTagsContainer.AddTag(Attributes_Secondary_MaxMana);
 
-	ADD_TAG_TO_CONTAINER(Attributes, Secondary, Armor)
-	ADD_TAG_TO_CONTAINER(Attributes, Secondary, ArmorPenetration)
-	ADD_TAG_TO_CONTAINER(Attributes, Secondary, BlockChance)
-	ADD_TAG_TO_CONTAINER(Attributes, Secondary, CriticalHitChance)
-	ADD_TAG_TO_CONTAINER(Attributes, Secondary, CriticalHitDamage)
-	ADD_TAG_TO_CONTAINER(Attributes, Secondary, CriticalHitResistance)
-	ADD_TAG_TO_CONTAINER(Attributes, Secondary, HealthRegeneration)
-	ADD_TAG_TO_CONTAINER(Attributes, Secondary, ManaRegeneration)
-	ADD_TAG_TO_CONTAINER(Attributes, Secondary, MaxHealth)
-	ADD_TAG_TO_CONTAINER(Attributes, Secondary, MaxMana)
+	 GameplayTags.ArcaneTagsContainer.AddTag(Attributes_Vital_Health);
+	 GameplayTags.ArcaneTagsContainer.AddTag(Attributes_Vital_Mana);
 
-	ADD_TAG_TO_CONTAINER(Attributes, Vital, Health)
-	ADD_TAG_TO_CONTAINER(Attributes, Vital, Mana)
-
-	ADD_TAG_TO_CONTAINER(Inputs, Tag, LMB)
-	ADD_TAG_TO_CONTAINER(Inputs, Tag, RMB)
-	ADD_TAG_TO_CONTAINER(Inputs, Tag, 1)
-	ADD_TAG_TO_CONTAINER(Inputs, Tag, 2)
-	ADD_TAG_TO_CONTAINER(Inputs, Tag, 3)
-	ADD_TAG_TO_CONTAINER(Inputs, Tag, 4)
-
-#undef ADD_TAG_TO_CONTAINER
+	 GameplayTags.ArcaneTagsContainer.AddTag(Inputs_Tag_LMB);
+	 GameplayTags.ArcaneTagsContainer.AddTag(Inputs_Tag_RMB);
+	 GameplayTags.ArcaneTagsContainer.AddTag(Inputs_Tag_1);
+	 GameplayTags.ArcaneTagsContainer.AddTag(Inputs_Tag_2);
+	 GameplayTags.ArcaneTagsContainer.AddTag(Inputs_Tag_3);
+	 GameplayTags.ArcaneTagsContainer.AddTag(Inputs_Tag_4);
 }

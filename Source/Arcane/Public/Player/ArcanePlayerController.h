@@ -6,6 +6,7 @@
 #include "GameFramework/PlayerController.h"
 #include "ArcanePlayerController.generated.h"
 
+class USplineComponent;
 class UArcaneAbilitySystemComponent;
 class UArcaneInputConfig;
 class IHighlightInterface;
@@ -28,6 +29,17 @@ protected:
 	virtual void SetupInputComponent() override;
 
 private:
+	void Move(const FInputActionValue& InputActionValue);
+	void CursorTrace();
+
+	void AbilityInputTagPressed(FGameplayTag InputTag);
+	void AbilityInputTagReleased(FGameplayTag InputTag);
+	void AbilityInputTagHeld(FGameplayTag InputTag);
+
+	void AutoRun();
+
+	UArcaneAbilitySystemComponent* GetASC();
+
 	UPROPERTY(EditAnywhere, Category="Input")
 	TObjectPtr<UInputMappingContext> ArcaneInputMappingContext;
 
@@ -37,18 +49,23 @@ private:
 	UPROPERTY()
 	TScriptInterface<IHighlightInterface> HighlightedInterface;
 
-	void Move(const FInputActionValue& InputActionValue);
-	void CursorTrace();
-
 	UPROPERTY(EditDefaultsOnly, Category="Input")
 	TObjectPtr<UArcaneInputConfig> InputConfig;
 
 	UPROPERTY()
 	TObjectPtr<UArcaneAbilitySystemComponent> ArcaneAbilitySystemComponent;
 
-	UArcaneAbilitySystemComponent* GetASC();
+	UPROPERTY(EditDefaultsOnly, Category="Input")
+	float AutoRunAcceptanceRadius = 50.f;
 
-	void AbilityInputTagPressed(FGameplayTag InputTag);
-	void AbilityInputTagReleased(FGameplayTag InputTag);
-	void AbilityInputTagHeld(FGameplayTag InputTag);
+	UPROPERTY(EditDefaultsOnly, Category="Input")
+	float ShortPressThreshold = 0.5f;
+
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<USplineComponent> PathSpline;
+
+	FVector CachedDestination = FVector::ZeroVector;
+	float FollowTime = 0.f;
+	bool bAutoRunning = false;
+	bool bIsTargeting = false;
 };
