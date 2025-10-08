@@ -93,7 +93,6 @@ void AArcanePlayerController::CursorTrace()
 		UE_LOG(LogTemp, Display, TEXT("%s highlighted"), *HighlightInterface.GetObject()->GetName());
 	};
 
-	FHitResult CursorHit;
 	GetHitResultUnderCursor(ECC_Visibility, /*bTraceComplex*/ false, CursorHit);
 	if(!CursorHit.bBlockingHit)
 	{
@@ -127,7 +126,10 @@ void AArcanePlayerController::AbilityInputTagPressed(FGameplayTag InputTag)
 		bIsTargeting = HighlightedInterface ? true : false;
 		bAutoRunning = false;
 	}
-	if (GetASC()) GetASC()->AbilityInputTagPressed(InputTag);
+	if(GetASC())
+	{
+		GetASC()->AbilityInputTagPressed(InputTag);
+	}
 }
 
 void AArcanePlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
@@ -178,9 +180,9 @@ void AArcanePlayerController::AbilityInputTagHeld(FGameplayTag InputTag)
 
 	FollowTime += GetWorld()->GetDeltaSeconds();
 
-	if(FHitResult Hit; GetHitResultUnderCursor(ECC_Visibility, false, Hit))
+	if(CursorHit.bBlockingHit)
 	{
-		CachedDestination = Hit.ImpactPoint;
+		CachedDestination = CursorHit.ImpactPoint;
 	}
 
 	if(APawn* ControlledPawn = GetPawn())

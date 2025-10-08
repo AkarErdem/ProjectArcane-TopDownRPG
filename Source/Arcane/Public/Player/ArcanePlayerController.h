@@ -46,9 +46,6 @@ private:
 	UPROPERTY(EditAnywhere, Category="Input")
 	TObjectPtr<UInputAction> MoveAction;
 
-	UPROPERTY()
-	TScriptInterface<IHighlightInterface> HighlightedInterface;
-
 	UPROPERTY(EditDefaultsOnly, Category="Input")
 	TObjectPtr<UArcaneInputConfig> InputConfig;
 
@@ -63,6 +60,9 @@ private:
 
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<USplineComponent> PathSpline;
+
+	TScriptInterface<IHighlightInterface> HighlightedInterface;
+	FHitResult CursorHit;
 
 	FVector CachedDestination = FVector::ZeroVector;
 	float FollowTime = 0.f;
