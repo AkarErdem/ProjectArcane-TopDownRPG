@@ -32,6 +32,9 @@ protected:
 	UPROPERTY(EditAnywhere, Category="Combat")
 	TObjectPtr<USkeletalMeshComponent> Weapon;
 
+	UPROPERTY(EditAnywhere, Category="Combat")
+	FName WeaponTipSocketName = "";
+
 	UPROPERTY()
 	TObjectPtr<UArcaneAbilitySystemComponent> AbilitySystemComponent;
 
@@ -51,11 +54,13 @@ protected:
 
 	void InitDefaultAttributes() const;
 
+	void AddCharacterAbilities() const;
+
+	virtual FVector GetCombatSocketLocation();
+
 	virtual void InitAbilityActorInfo();
 
 	virtual void BeginPlay() override;
-
-	void AddCharacterAbilities() const;
 
 private:
 	UPROPERTY(EditAnywhere, Category="Abilities")

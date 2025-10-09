@@ -18,4 +18,6 @@ class ARCANE_API ICombatInterface
 
 public:
 	virtual int32 GetCharacterLevel();
+
+	virtual FVector GetSocketLocation();
 };

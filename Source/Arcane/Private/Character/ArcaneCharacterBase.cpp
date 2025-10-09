@@ -34,6 +34,13 @@ void AArcaneCharacterBase::AddCharacterAbilities() const
 	ArcaneASC->AddCharacterAbilities(StartupAbilities);
 }
 
+FVector AArcaneCharacterBase::GetCombatSocketLocation()
+{
+	check(Weapon);
+
+	return Weapon->GetSocketLocation(WeaponTipSocketName);
+}
+
 void AArcaneCharacterBase::InitAbilityActorInfo() { }
 
 void AArcaneCharacterBase::ApplyEffectToSelf(const TSubclassOf<UGameplayEffect> GameplayEffectClass, const float Level) const
