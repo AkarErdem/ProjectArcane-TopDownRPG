@@ -43,7 +43,10 @@ void AArcanePlayerController::SetupInputComponent()
 	UArcaneInputComponent* ArcaneInputComponent = CastChecked<UArcaneInputComponent>(InputComponent);
 	ArcaneInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AArcanePlayerController::Move);
 
-	ArcaneInputComponent->BindAbilityActions(InputConfig, this, &ThisClass::AbilityInputTagPressed, &ThisClass::AbilityInputTagReleased, &ThisClass::AbilityInputTagHeld);
+	ArcaneInputComponent->BindAbilityActions(InputConfig, this,
+		&ThisClass::AbilityInputTagPressed,
+		&ThisClass::AbilityInputTagReleased,
+		&ThisClass::AbilityInputTagHeld);
 }
 
 void AArcanePlayerController::Move(const FInputActionValue& InputActionValue)
@@ -123,7 +126,8 @@ void AArcanePlayerController::AbilityInputTagPressed(FGameplayTag InputTag)
 {
 	if(InputTag.MatchesTagExact(Inputs_Tag_LMB))
 	{
-		bIsTargeting = HighlightedInterface ? true : false;
+		FollowTime = 0.f;
+		bIsTargeting = HighlightedInterface != nullptr;
 		bAutoRunning = false;
 	}
 	if(GetASC())
@@ -134,16 +138,29 @@ void AArcanePlayerController::AbilityInputTagPressed(FGameplayTag InputTag)
 
 void AArcanePlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 {
-	if(!InputTag.MatchesTagExact(Inputs_Tag_LMB) || bIsTargeting)
+	if(!InputTag.MatchesTagExact(Inputs_Tag_LMB))
 	{
-		if(GetASC())
+		if (UArcaneAbilitySystemComponent* ASC = GetASC())
 		{
-			GetASC()->AbilityInputTagReleased(InputTag);
+			ASC->AbilityInputTagReleased(InputTag);
 		}
 		return;
 	}
 
-	if(const APawn* ControlledPawn = GetPawn(); FollowTime <= ShortPressThreshold && ControlledPawn)
+	const bool bWasShortPress = FollowTime <= ShortPressThreshold;
+	FollowTime = 0.f;
+
+	if(bIsTargeting)
+	{
+		bIsTargeting = false;
+		if (UArcaneAbilitySystemComponent* ASC = GetASC())
+		{
+			ASC->AbilityInputTagReleased(InputTag);
+		}
+		return;
+	}
+
+	if(const APawn* ControlledPawn = GetPawn(); bWasShortPress && ControlledPawn)
 	{
 		if(UNavigationPath* NavPath = UNavigationSystemV1::FindPathToLocationSynchronously(this, ControlledPawn->GetActorLocation(), CachedDestination))
 		{
@@ -151,7 +168,9 @@ void AArcanePlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 			for(FVector Point : NavPath->PathPoints)
 			{
 				PathSpline->AddSplinePoint(Point, ESplineCoordinateSpace::World, false);
+#if !(UE_BUILD_SHIPPING || UE_BUILD_TEST)
 				DrawDebugSphere(GetWorld(), Point, 8.f, 8, FColor::Green, false, 5.f);
+#endif
 			}
 			PathSpline->UpdateSpline();
 
@@ -161,9 +180,6 @@ void AArcanePlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 				bAutoRunning = true;
 			}
 		}
-
-		FollowTime = 0.f;
-		bIsTargeting = false;
 	}
 }
 

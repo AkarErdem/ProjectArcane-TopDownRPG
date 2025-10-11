@@ -1,6 +1,5 @@
 // Copyright (c) 2025 Erdem Akar
 
-
 #include "AbilitySystem/Abilities/ArcaneProjectileSpell.h"
 #include "Actor/ArcaneProjectile.h"
 #include "Interaction/CombatInterface.h"
@@ -12,12 +11,12 @@ void UArcaneProjectileSpell::ActivateAbility(const FGameplayAbilitySpecHandle Ha
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 
 	const bool IsServer = HasAuthority(&ActivationInfo);
-	if (!IsServer)
+	if(!IsServer)
 	{
 		return;
 	}
 
-	if (ICombatInterface* CombatInterface = Cast<ICombatInterface>(GetAvatarActorFromActorInfo()))
+	if(ICombatInterface* CombatInterface = Cast<ICombatInterface>(GetAvatarActorFromActorInfo()))
 	{
 		const FVector SocketLocation = CombatInterface->GetSocketLocation();
 

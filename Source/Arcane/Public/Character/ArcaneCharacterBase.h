@@ -56,9 +56,9 @@ protected:
 
 	void AddCharacterAbilities() const;
 
-	virtual FVector GetCombatSocketLocation();
-
 	virtual void InitAbilityActorInfo();
+
+	virtual FVector GetSocketLocation() override;
 
 	virtual void BeginPlay() override;
 

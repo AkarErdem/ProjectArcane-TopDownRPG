@@ -34,7 +34,7 @@ void AArcaneCharacterBase::AddCharacterAbilities() const
 	ArcaneASC->AddCharacterAbilities(StartupAbilities);
 }
 
-FVector AArcaneCharacterBase::GetCombatSocketLocation()
+FVector AArcaneCharacterBase::GetSocketLocation()
 {
 	check(Weapon);
 
