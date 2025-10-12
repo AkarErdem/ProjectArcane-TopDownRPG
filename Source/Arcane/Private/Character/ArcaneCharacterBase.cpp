@@ -26,7 +26,7 @@ void AArcaneCharacterBase::BeginPlay()
 void AArcaneCharacterBase::AddCharacterAbilities() const
 {
 	UArcaneAbilitySystemComponent* ArcaneASC = Cast<UArcaneAbilitySystemComponent>(GetAbilitySystemComponent());
-	if (!HasAuthority())
+	if(!HasAuthority())
 	{
 		return;
 	}
@@ -39,6 +39,13 @@ FVector AArcaneCharacterBase::GetSocketLocation()
 	check(Weapon);
 
 	return Weapon->GetSocketLocation(WeaponTipSocketName);
+}
+
+FRotator AArcaneCharacterBase::GetSocketRotator()
+{
+	check(Weapon);
+
+	return Weapon->GetSocketRotation(WeaponTipSocketName);
 }
 
 void AArcaneCharacterBase::InitAbilityActorInfo() { }

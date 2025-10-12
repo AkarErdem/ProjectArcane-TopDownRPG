@@ -1,6 +1,7 @@
 // Copyright (c) 2025 Erdem Akar
 
 #include "AbilitySystem/Abilities/ArcaneProjectileSpell.h"
+#include "Abilities/Tasks/AbilityTask.h"
 #include "Actor/ArcaneProjectile.h"
 #include "Interaction/CombatInterface.h"
 
@@ -9,8 +10,11 @@ void UArcaneProjectileSpell::ActivateAbility(const FGameplayAbilitySpecHandle Ha
                                              const FGameplayEventData* TriggerEventData)
 {
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
+}
 
-	const bool IsServer = HasAuthority(&ActivationInfo);
+void UArcaneProjectileSpell::SpawnProjectile() const
+{
+	const bool IsServer = GetAvatarActorFromActorInfo()->HasAuthority();
 	if(!IsServer)
 	{
 		return;
@@ -19,11 +23,11 @@ void UArcaneProjectileSpell::ActivateAbility(const FGameplayAbilitySpecHandle Ha
 	if(ICombatInterface* CombatInterface = Cast<ICombatInterface>(GetAvatarActorFromActorInfo()))
 	{
 		const FVector SocketLocation = CombatInterface->GetSocketLocation();
+		const FQuat SocketRotation = CombatInterface->GetSocketRotator().Quaternion();
 
 		FTransform SpawnTransform;
 		SpawnTransform.SetLocation(SocketLocation);
-
-		// TODO: Set projectile rotation
+		SpawnTransform.SetRotation(SocketRotation);
 
 		AArcaneProjectile* Projectile = GetWorld()->SpawnActorDeferred<AArcaneProjectile>(
 			ProjectileClass,

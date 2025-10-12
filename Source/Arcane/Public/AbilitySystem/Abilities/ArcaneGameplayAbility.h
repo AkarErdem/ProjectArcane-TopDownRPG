@@ -14,4 +14,6 @@ class ARCANE_API UArcaneGameplayAbility : public UGameplayAbility
 public:
 	UPROPERTY(EditDefaultsOnly, Category="Input")
 	FGameplayTag StartupInputTag;
+
+	virtual void NotifyAbilityTaskWaitingOnAvatar(UAbilityTask* AbilityTask) override;
 };

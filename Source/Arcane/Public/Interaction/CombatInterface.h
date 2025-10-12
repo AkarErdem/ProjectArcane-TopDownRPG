@@ -20,4 +20,6 @@ public:
 	virtual int32 GetCharacterLevel();
 
 	virtual FVector GetSocketLocation();
+
+	virtual FRotator GetSocketRotator();
 };
