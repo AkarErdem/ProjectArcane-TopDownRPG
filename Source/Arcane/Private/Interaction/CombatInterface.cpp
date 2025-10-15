@@ -11,8 +11,3 @@ FVector ICombatInterface::GetSocketLocation()
 {
 	return FVector();
 }
-
-FRotator ICombatInterface::GetSocketRotator()
-{
-	return FRotator();
-}

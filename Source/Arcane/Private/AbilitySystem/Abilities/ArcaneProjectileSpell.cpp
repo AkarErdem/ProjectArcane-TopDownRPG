@@ -12,7 +12,7 @@ void UArcaneProjectileSpell::ActivateAbility(const FGameplayAbilitySpecHandle Ha
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 }
 
-void UArcaneProjectileSpell::SpawnProjectile() const
+void UArcaneProjectileSpell::SpawnProjectile(const FVector& ProjectileTarget)
 {
 	const bool IsServer = GetAvatarActorFromActorInfo()->HasAuthority();
 	if(!IsServer)
@@ -23,11 +23,12 @@ void UArcaneProjectileSpell::SpawnProjectile() const
 	if(ICombatInterface* CombatInterface = Cast<ICombatInterface>(GetAvatarActorFromActorInfo()))
 	{
 		const FVector SocketLocation = CombatInterface->GetSocketLocation();
-		const FQuat SocketRotation = CombatInterface->GetSocketRotator().Quaternion();
+		FRotator Rotation = (ProjectileTarget - SocketLocation).Rotation();
+		Rotation.Pitch = 0.f;
 
 		FTransform SpawnTransform;
 		SpawnTransform.SetLocation(SocketLocation);
-		SpawnTransform.SetRotation(SocketRotation);
+		SpawnTransform.SetRotation(Rotation.Quaternion());
 
 		AArcaneProjectile* Projectile = GetWorld()->SpawnActorDeferred<AArcaneProjectile>(
 			ProjectileClass,

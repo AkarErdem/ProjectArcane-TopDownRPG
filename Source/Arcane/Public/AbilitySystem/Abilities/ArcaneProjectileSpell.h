@@ -19,6 +19,6 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TSubclassOf<AArcaneProjectile> ProjectileClass;
 
-	UFUNCTION(BlueprintCallable, Category="Projectile", meta=(HidePin = "Target", DefaultToSelf = "Target"))
-	void SpawnProjectile() const;
+	UFUNCTION(BlueprintCallable, Category="Projectile")
+	void SpawnProjectile(const FVector& ProjectileTarget);
 };

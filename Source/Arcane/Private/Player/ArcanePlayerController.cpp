@@ -44,9 +44,9 @@ void AArcanePlayerController::SetupInputComponent()
 	ArcaneInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AArcanePlayerController::Move);
 
 	ArcaneInputComponent->BindAbilityActions(InputConfig, this,
-		&ThisClass::AbilityInputTagPressed,
-		&ThisClass::AbilityInputTagReleased,
-		&ThisClass::AbilityInputTagHeld);
+	                                         &ThisClass::AbilityInputTagPressed,
+	                                         &ThisClass::AbilityInputTagReleased,
+	                                         &ThisClass::AbilityInputTagHeld);
 }
 
 void AArcanePlayerController::Move(const FInputActionValue& InputActionValue)
@@ -126,6 +126,10 @@ void AArcanePlayerController::AbilityInputTagPressed(FGameplayTag InputTag)
 		FollowTime = 0.f;
 		bIsTargeting = HighlightedInterface != nullptr;
 		bAutoRunning = false;
+		if(!HighlightedInterface)
+		{
+			return;
+		}
 	}
 	if(GetASC())
 	{
@@ -137,7 +141,7 @@ void AArcanePlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 {
 	if(!InputTag.MatchesTagExact(Inputs_Tag_LMB))
 	{
-		if (UArcaneAbilitySystemComponent* ASC = GetASC())
+		if(UArcaneAbilitySystemComponent* ASC = GetASC())
 		{
 			ASC->AbilityInputTagReleased(InputTag);
 		}
@@ -150,13 +154,14 @@ void AArcanePlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 	if(bIsTargeting)
 	{
 		bIsTargeting = false;
-		if (UArcaneAbilitySystemComponent* ASC = GetASC())
+		if(UArcaneAbilitySystemComponent* ASC = GetASC())
 		{
 			ASC->AbilityInputTagReleased(InputTag);
 		}
 		return;
 	}
 
+	// Movement
 	if(const APawn* ControlledPawn = GetPawn(); bWasShortPress && ControlledPawn)
 	{
 		if(UNavigationPath* NavPath = UNavigationSystemV1::FindPathToLocationSynchronously(this, ControlledPawn->GetActorLocation(), CachedDestination))

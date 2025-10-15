@@ -60,8 +60,6 @@ protected:
 
 	virtual FVector GetSocketLocation() override;
 
-	virtual FRotator GetSocketRotator() override;
-
 	virtual void BeginPlay() override;
 
 private:

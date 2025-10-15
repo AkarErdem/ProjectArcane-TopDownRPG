@@ -3,6 +3,7 @@
 #include "Character/ArcaneCharacterBase.h"
 #include "AbilitySystemComponent.h"
 #include "AbilitySystem/ArcaneAbilitySystemComponent.h"
+#include "Components/CapsuleComponent.h"
 
 AArcaneCharacterBase::AArcaneCharacterBase()
 {
@@ -39,13 +40,6 @@ FVector AArcaneCharacterBase::GetSocketLocation()
 	check(Weapon);
 
 	return Weapon->GetSocketLocation(WeaponTipSocketName);
-}
-
-FRotator AArcaneCharacterBase::GetSocketRotator()
-{
-	check(Weapon);
-
-	return Weapon->GetSocketRotation(WeaponTipSocketName);
 }
 
 void AArcaneCharacterBase::InitAbilityActorInfo() { }
