@@ -2,8 +2,8 @@
 
 #include "Character/ArcaneCharacterBase.h"
 #include "AbilitySystemComponent.h"
+#include "MotionWarpingComponent.h"
 #include "AbilitySystem/ArcaneAbilitySystemComponent.h"
-#include "Components/CapsuleComponent.h"
 
 AArcaneCharacterBase::AArcaneCharacterBase()
 {
@@ -12,6 +12,8 @@ AArcaneCharacterBase::AArcaneCharacterBase()
 	Weapon = CreateDefaultSubobject<USkeletalMeshComponent>("Weapon");
 	Weapon->SetupAttachment(GetMesh(), "WeaponHandSocket");
 	Weapon->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+	MotionWarpingComponent = CreateDefaultSubobject<UMotionWarpingComponent>("MotionWarping");
 }
 
 UAbilitySystemComponent* AArcaneCharacterBase::GetAbilitySystemComponent() const
@@ -40,6 +42,11 @@ FVector AArcaneCharacterBase::GetSocketLocation()
 	check(Weapon);
 
 	return Weapon->GetSocketLocation(WeaponTipSocketName);
+}
+
+void AArcaneCharacterBase::UpdateFacingTarget_Implementation(FName TargetName, FVector TargetLocation)
+{
+	MotionWarpingComponent->AddOrUpdateWarpTargetFromLocation(TargetName, TargetLocation);
 }
 
 void AArcaneCharacterBase::InitAbilityActorInfo() { }

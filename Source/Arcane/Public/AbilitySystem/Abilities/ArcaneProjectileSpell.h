@@ -14,11 +14,11 @@ class ARCANE_API UArcaneProjectileSpell : public UArcaneGameplayAbility
 	GENERATED_BODY()
 
 protected:
-	virtual void ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData) override;
-
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TSubclassOf<AArcaneProjectile> ProjectileClass;
 
 	UFUNCTION(BlueprintCallable, Category="Projectile")
 	void SpawnProjectile(const FVector& ProjectileTarget);
+
+	virtual void ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData) override;
 };

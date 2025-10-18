@@ -8,6 +8,7 @@
 #include "Interaction/CombatInterface.h"
 #include "ArcaneCharacterBase.generated.h"
 
+class UMotionWarpingComponent;
 class UGameplayAbility;
 class UGameplayEffect;
 class UArcaneAttributeSet;
@@ -31,6 +32,9 @@ public:
 protected:
 	UPROPERTY(EditAnywhere, Category="Combat")
 	TObjectPtr<USkeletalMeshComponent> Weapon;
+
+	UPROPERTY(VisibleAnywhere, Category="Combat")
+	TObjectPtr<UMotionWarpingComponent> MotionWarpingComponent;
 
 	UPROPERTY(EditAnywhere, Category="Combat")
 	FName WeaponTipSocketName = "";
@@ -58,9 +62,14 @@ protected:
 
 	virtual void InitAbilityActorInfo();
 
-	virtual FVector GetSocketLocation() override;
-
+	//~ Begin AActor Interface
 	virtual void BeginPlay() override;
+	//~ End AActor Interface
+
+	//~ Begin UCombat Interface
+	virtual FVector GetSocketLocation() override;
+	virtual void UpdateFacingTarget_Implementation(FName TargetName, FVector TargetLocation) override;
+	//~ End UCombat Interface
 
 private:
 	UPROPERTY(EditAnywhere, Category="Abilities")
