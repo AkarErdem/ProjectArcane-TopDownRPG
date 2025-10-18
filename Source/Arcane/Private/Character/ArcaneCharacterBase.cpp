@@ -4,10 +4,14 @@
 #include "AbilitySystemComponent.h"
 #include "MotionWarpingComponent.h"
 #include "AbilitySystem/ArcaneAbilitySystemComponent.h"
+#include "Arcane/Arcane.h"
 
 AArcaneCharacterBase::AArcaneCharacterBase()
 {
 	PrimaryActorTick.bCanEverTick = false;
+
+	GetMesh()->SetCollisionResponseToChannel(ECC_PROJECTILE, ECR_Overlap);
+	GetMesh()->SetGenerateOverlapEvents(true);
 
 	Weapon = CreateDefaultSubobject<USkeletalMeshComponent>("Weapon");
 	Weapon->SetupAttachment(GetMesh(), "WeaponHandSocket");
