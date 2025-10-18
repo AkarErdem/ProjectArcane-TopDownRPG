@@ -1,6 +1,8 @@
 // Copyright (c) 2025 Erdem Akar
 
 #include "Actor/ArcaneProjectile.h"
+#include "AbilitySystemBlueprintLibrary.h"
+#include "AbilitySystemComponent.h"
 #include "NiagaraFunctionLibrary.h"
 #include "Arcane/Arcane.h"
 #include "Components/AudioComponent.h"
@@ -42,34 +44,34 @@ void AArcaneProjectile::BeginPlay()
 
 void AArcaneProjectile::Destroyed()
 {
-	if(!bHit && !HasAuthority())
-	{
-		PlayDestroyedEffects();
-	}
+	PlayDestructionEffects();
 	Super::Destroyed();
 }
 
 void AArcaneProjectile::OnSphereOverlap(UPrimitiveComponent* OverlapComponent, AActor* OtherActor,
                                         UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	PlayDestroyedEffects();
+	if(OtherActor == GetInstigator())
+	{
+		return;
+	}
 
 	if(HasAuthority())
 	{
+		if(UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(OtherActor); TargetASC && DamageEffectSpecHandle.IsValid())
+		{
+			TargetASC->ApplyGameplayEffectSpecToSelf(*DamageEffectSpecHandle.Data.Get());
+		}
 		Destroy();
-	}
-	else
-	{
-		bHit = true;
 	}
 }
 
-void AArcaneProjectile::PlayDestroyedEffects()
+void AArcaneProjectile::PlayDestructionEffects()
 {
 	UGameplayStatics::PlaySoundAtLocation(this, ImpactSound, GetActorLocation());
 	UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, ImpactEffect, GetActorLocation());
 
-	if (IsValid(LoopingSoundComponent))
+	if(IsValid(LoopingSoundComponent))
 	{
 		LoopingSoundComponent->Stop();
 	}

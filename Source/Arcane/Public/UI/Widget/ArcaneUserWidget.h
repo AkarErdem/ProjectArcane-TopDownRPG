@@ -6,8 +6,6 @@
 #include "Blueprint/UserWidget.h"
 #include "ArcaneUserWidget.generated.h"
 
-class UArcaneWidgetController;
-
 UCLASS()
 class ARCANE_API UArcaneUserWidget : public UUserWidget
 {
@@ -15,11 +13,11 @@ class ARCANE_API UArcaneUserWidget : public UUserWidget
 
 public:
 	UFUNCTION(BlueprintCallable)
-	void SetWidgetController(UArcaneWidgetController* InWidgetController);
+	void SetWidgetController(UObject* InWidgetController);
 
 protected:
 	UPROPERTY(BlueprintReadOnly)
-	TObjectPtr<UArcaneWidgetController> WidgetController;
+	TObjectPtr<UObject> WidgetController;
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void OnWidgetControllerSet();

@@ -1,7 +1,8 @@
 // Copyright (c) 2025 Erdem Akar
 
 #include "AbilitySystem/Abilities/ArcaneProjectileSpell.h"
-#include "Abilities/Tasks/AbilityTask.h"
+#include "AbilitySystemBlueprintLibrary.h"
+#include "AbilitySystemComponent.h"
 #include "Actor/ArcaneProjectile.h"
 #include "Interaction/CombatInterface.h"
 
@@ -20,25 +21,30 @@ void UArcaneProjectileSpell::SpawnProjectile(const FVector& ProjectileTarget)
 		return;
 	}
 
-	if(ICombatInterface* CombatInterface = Cast<ICombatInterface>(GetAvatarActorFromActorInfo()))
+	ICombatInterface* CombatInterface = Cast<ICombatInterface>(GetAvatarActorFromActorInfo());
+	if(!CombatInterface)
 	{
-		const FVector SocketLocation = CombatInterface->GetSocketLocation();
-		FRotator Rotation = (ProjectileTarget - SocketLocation).Rotation();
-		Rotation.Pitch = 0.f;
-
-		FTransform SpawnTransform;
-		SpawnTransform.SetLocation(SocketLocation);
-		SpawnTransform.SetRotation(Rotation.Quaternion());
-
-		AArcaneProjectile* Projectile = GetWorld()->SpawnActorDeferred<AArcaneProjectile>(
-			ProjectileClass,
-			SpawnTransform,
-			GetOwningActorFromActorInfo(),
-			Cast<APawn>(GetAvatarActorFromActorInfo()),
-			ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
-
-		// TODO: Give the Projectile a Gameplay Effect Spec for causing damage
-
-		Projectile->FinishSpawning(SpawnTransform);
+		return;
 	}
+
+	const FVector SocketLocation = CombatInterface->GetSocketLocation();
+	FRotator Rotation = (ProjectileTarget - SocketLocation).Rotation();
+	Rotation.Pitch = 0.f;
+
+	FTransform SpawnTransform;
+	SpawnTransform.SetLocation(SocketLocation);
+	SpawnTransform.SetRotation(Rotation.Quaternion());
+
+	AArcaneProjectile* Projectile = GetWorld()->SpawnActorDeferred<AArcaneProjectile>(
+		ProjectileClass,
+		SpawnTransform,
+		GetOwningActorFromActorInfo(),
+		Cast<APawn>(GetAvatarActorFromActorInfo()),
+		ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
+
+	const UAbilitySystemComponent* SourceASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetAvatarActorFromActorInfo());
+	const FGameplayEffectSpecHandle SpecHandle = SourceASC->MakeOutgoingSpec(DamageEffectClass, GetAbilityLevel(), SourceASC->MakeEffectContext());
+	Projectile->DamageEffectSpecHandle = SpecHandle;
+
+	Projectile->FinishSpawning(SpawnTransform);
 }

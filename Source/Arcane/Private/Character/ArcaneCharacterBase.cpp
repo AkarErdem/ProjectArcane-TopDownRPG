@@ -5,10 +5,13 @@
 #include "MotionWarpingComponent.h"
 #include "AbilitySystem/ArcaneAbilitySystemComponent.h"
 #include "Arcane/Arcane.h"
+#include "Components/CapsuleComponent.h"
 
 AArcaneCharacterBase::AArcaneCharacterBase()
 {
 	PrimaryActorTick.bCanEverTick = false;
+
+	GetCapsuleComponent()->SetGenerateOverlapEvents(false);
 
 	GetMesh()->SetCollisionResponseToChannel(ECC_PROJECTILE, ECR_Overlap);
 	GetMesh()->SetGenerateOverlapEvents(true);
