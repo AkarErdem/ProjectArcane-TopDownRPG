@@ -27,5 +27,5 @@ private:
 
 	void ReceiveTargetDataFromClient();
 
-	void OnTargetDataReplicatedCallback(const FGameplayAbilityTargetDataHandle&, FGameplayTag);
+	void OnTargetDataReplicatedCallback(const FGameplayAbilityTargetDataHandle& DataHandle, FGameplayTag ActivationTag);
 };

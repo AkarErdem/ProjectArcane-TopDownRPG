@@ -31,7 +31,6 @@ void UTargetDataUnderMouse::SendTargetDataToServer()
 
 	// Note: These are cleaned up by the FGameplayAbilityTargetDataHandle (via an internal TSharedPtr)
 	FGameplayAbilityTargetData_SingleTargetHit* Data = new FGameplayAbilityTargetData_SingleTargetHit();
-
 	PC->GetHitResultUnderCursor(ECC_Visibility, false, Data->HitResult);
 
 	const FGameplayAbilityTargetDataHandle DataHandle = FGameplayAbilityTargetDataHandle(Data);
