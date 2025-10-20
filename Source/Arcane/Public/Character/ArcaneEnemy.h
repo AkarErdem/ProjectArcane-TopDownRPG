@@ -4,11 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "GameplayEffectTypes.h"
+#include "AbilitySystem/Data/CharacterClassInfo.h"
 #include "Character/ArcaneCharacterBase.h"
 #include "Interaction/EnemyInterface.h"
 #include "UI/WidgetController/OverlayWidgetController.h"
 #include "ArcaneEnemy.generated.h"
 
+enum ECharacterClass : uint8;
 class UWidgetComponent;
 
 UCLASS()
@@ -52,13 +54,18 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Character Defaults")
 	int32 Level = 1;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Character Defaults")
+	TEnumAsByte<ECharacterClass> CharacterClass = Warrior;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<UWidgetComponent> HealthBar;
+
+	virtual void InitDefaultAttributes() const override;
 
 private:
 	FDelegateHandle HealthChangedHandle;
 	FDelegateHandle MaxHealthChangedHandle;
 
-	void Initialize();
-	void Cleanup();
+	void InitializeEnemy();
+	void CleanupEnemy();
 };

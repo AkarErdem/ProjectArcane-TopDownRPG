@@ -2,6 +2,7 @@
 
 #include "Character/ArcaneEnemy.h"
 #include "AbilitySystem/ArcaneAbilitySystemComponent.h"
+#include "AbilitySystem/ArcaneAbilitySystemLibrary.h"
 #include "AbilitySystem/ArcaneAttributeSet.h"
 #include "Arcane/Arcane.h"
 #include "Components/WidgetComponent.h"
@@ -24,16 +25,23 @@ AArcaneEnemy::AArcaneEnemy()
 void AArcaneEnemy::BeginPlay()
 {
 	Super::BeginPlay();
-	Initialize();
+	InitializeEnemy();
 }
 
 void AArcaneEnemy::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
-	Cleanup();
+	CleanupEnemy();
 	Super::EndPlay(EndPlayReason);
 }
 
-void AArcaneEnemy::Initialize()
+void AArcaneEnemy::InitDefaultAttributes() const
+{
+	Super::InitDefaultAttributes();
+
+	UArcaneAbilitySystemLibrary::InitializeDefaultAttributes(this, CharacterClass, Level, GetAbilitySystemComponent());
+}
+
+void AArcaneEnemy::InitializeEnemy()
 {
 	InitAbilityActorInfo();
 
@@ -60,7 +68,7 @@ void AArcaneEnemy::Initialize()
 		OnMaxHealthChanged.Broadcast(ArcaneAttributeSet->GetMaxHealth());
 	}
 }
-void AArcaneEnemy::Cleanup()
+void AArcaneEnemy::CleanupEnemy()
 {
 	if (const UArcaneAttributeSet* ArcaneAttributeSet = CastChecked<UArcaneAttributeSet>(AttributeSet); ArcaneAttributeSet && AbilitySystemComponent)
 	{

@@ -3,14 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "AttributeSet.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
-#include "Player/ArcanePlayerState.h"
 #include "UI/HUD/ArcaneHUD.h"
 #include "UI/WidgetController/ArcaneWidgetController.h"
 #include "UI/WidgetController/AttributeMenuWidgetController.h"
 #include "UI/WidgetController/OverlayWidgetController.h"
 #include "ArcaneAbilitySystemLibrary.generated.h"
+
+enum ECharacterClass : uint8;
 
 UCLASS()
 class ARCANE_API UArcaneAbilitySystemLibrary : public UBlueprintFunctionLibrary
@@ -27,4 +27,8 @@ public:
 
 	UFUNCTION(BlueprintPure, Category="ArcaneAbilitySystemLibrary|WidgetController", meta = (WorldContext = "WorldContextObject"))
 	static UAttributeMenuWidgetController* GetAttributeMenuWidgetController(const UObject* WorldContextObject);
+
+	UFUNCTION(BlueprintCallable, Category="ArcaneAbilitySystemLibrary|CharacterClass", meta = (WorldContext = "WorldContextObject"))
+	static void InitializeDefaultAttributes(const UObject* WorldContextObject, ECharacterClass CharacterClass, float Level, UAbilitySystemComponent* ASC);
+
 };
