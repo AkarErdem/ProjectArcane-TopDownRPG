@@ -1,7 +1,6 @@
 // Copyright (c) 2025 Erdem Akar
 
 #include "AbilitySystem/Data/AttributeInfo.h"
-
 #include "AbilitySystem/ArcaneAttributeSet.h"
 #include "Game/ArcaneGameplayTags.h"
 
