@@ -30,6 +30,9 @@ ADD_ATTRIBUTE_TAG(Secondary, MaxMana, "Maximum mana capacity.");
 ADD_ATTRIBUTE_TAG(Vital, Health, "Amount of damage a character can take before death.");
 ADD_ATTRIBUTE_TAG(Vital, Mana, "Resource for spells.");
 
+// Meta
+ADD_NATIVE_TAG(Meta, Tag, Damage, "Applied to a character for reducing health.");
+
 // Inputs
 ADD_NATIVE_TAG(Inputs, Tag, LMB, "");
 ADD_NATIVE_TAG(Inputs, Tag, RMB, "");
@@ -71,4 +74,6 @@ void FArcaneGameplayTags::Initialize()
 	 GameplayTags.ArcaneTagsContainer.AddTag(Inputs_Tag_2);
 	 GameplayTags.ArcaneTagsContainer.AddTag(Inputs_Tag_3);
 	 GameplayTags.ArcaneTagsContainer.AddTag(Inputs_Tag_4);
+
+	 GameplayTags.ArcaneTagsContainer.AddTag(Meta_Tag_Damage);
 }

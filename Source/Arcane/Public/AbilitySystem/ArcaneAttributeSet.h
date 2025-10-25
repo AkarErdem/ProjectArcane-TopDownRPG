@@ -154,6 +154,13 @@ public:
 	FGameplayAttributeData ManaRegeneration;
 	ATTRIBUTE_ACCESSORS(UArcaneAttributeSet, ManaRegeneration);
 
+	/*
+	 * Meta Attributes
+	 */
+	UPROPERTY(BlueprintReadOnly, Category="Meta Attributes")
+	FGameplayAttributeData IncomingDamage;
+	ATTRIBUTE_ACCESSORS(UArcaneAttributeSet, IncomingDamage);
+
 private:
 	static void SetEffectProperties(const FGameplayEffectModCallbackData& Data, FEffectProperties& Source, FEffectProperties& Target);
 };

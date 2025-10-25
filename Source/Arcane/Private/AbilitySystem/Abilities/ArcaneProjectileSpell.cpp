@@ -4,6 +4,7 @@
 #include "AbilitySystemBlueprintLibrary.h"
 #include "AbilitySystemComponent.h"
 #include "Actor/ArcaneProjectile.h"
+#include "Game/ArcaneGameplayTags.h"
 #include "Interaction/CombatInterface.h"
 
 void UArcaneProjectileSpell::ActivateAbility(const FGameplayAbilitySpecHandle Handle,
@@ -44,6 +45,9 @@ void UArcaneProjectileSpell::SpawnProjectile(const FVector& ProjectileTarget)
 
 	const UAbilitySystemComponent* SourceASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(GetAvatarActorFromActorInfo());
 	const FGameplayEffectSpecHandle SpecHandle = SourceASC->MakeOutgoingSpec(DamageEffectClass, GetAbilityLevel(), SourceASC->MakeEffectContext());
+
+	FArcaneGameplayTags GameplayTags = FArcaneGameplayTags::Get();
+	UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle, Meta_Tag_Damage, 50.f);
 	Projectile->DamageEffectSpecHandle = SpecHandle;
 
 	Projectile->FinishSpawning(SpawnTransform);

@@ -4,7 +4,6 @@
 #include "AbilitySystemBlueprintLibrary.h"
 #include "GameplayEffectExtension.h"
 #include "MathUtil.h"
-#include "Game/ArcaneGameplayTags.h"
 #include "GameFramework/Character.h"
 #include "Net/UnrealNetwork.h"
 
@@ -52,6 +51,23 @@ void UArcaneAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCall
 	if(Attribute == GetManaAttribute())
 	{
 		SetMana(FMathf::Clamp(GetMana(), 0.f, GetMaxMana()));
+	}
+
+	if(Attribute == GetIncomingDamageAttribute())
+	{
+		const float LocalIncomingDamage = GetIncomingDamage();
+		SetIncomingDamage(.0f);
+		if (LocalIncomingDamage > 0)
+		{
+			const float NewHealth = GetHealth() - LocalIncomingDamage;
+			SetHealth(FMath::Clamp(NewHealth, 0, GetMaxHealth()));
+
+			const bool IsFatal = NewHealth <= 0;
+			if (IsFatal)
+			{
+
+			}
+		}
 	}
 }
 
