@@ -2,7 +2,3 @@
 
 #include "AbilitySystem/Abilities/ArcaneGameplayAbility.h"
 
-void UArcaneGameplayAbility::NotifyAbilityTaskWaitingOnAvatar(class UAbilityTask* AbilityTask)
-{
-	Super::NotifyAbilityTaskWaitingOnAvatar(AbilityTask);
-}

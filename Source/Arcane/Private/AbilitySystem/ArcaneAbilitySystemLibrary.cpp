@@ -50,7 +50,6 @@ UAttributeMenuWidgetController* UArcaneAbilitySystemLibrary::GetAttributeMenuWid
 void UArcaneAbilitySystemLibrary::InitializeDefaultAttributes(const UObject* WorldContextObject, ECharacterClass CharacterClass, float Level, UAbilitySystemComponent* ASC)
 {
 	const AArcaneGameMode* ArcaneGameMode = Cast<AArcaneGameMode>(UGameplayStatics::GetGameMode(WorldContextObject));
-
 	if (!ArcaneGameMode)
 	{
 		return;
@@ -75,4 +74,21 @@ void UArcaneAbilitySystemLibrary::InitializeDefaultAttributes(const UObject* Wor
 	VitalAttributeContextHandle.AddSourceObject(AvatarActor);
 	const FGameplayEffectSpecHandle VitalAttributesSpecHandle = ASC->MakeOutgoingSpec(CharacterClassInfo->VitalAttributes, Level, VitalAttributeContextHandle);
 	ASC->ApplyGameplayEffectSpecToSelf(*VitalAttributesSpecHandle.Data.Get());
+}
+
+void UArcaneAbilitySystemLibrary::GiveStartupAbilities(const UObject* WorldContextObject, UAbilitySystemComponent* ASC)
+{
+	const AArcaneGameMode* ArcaneGameMode = Cast<AArcaneGameMode>(UGameplayStatics::GetGameMode(WorldContextObject));
+	if (!ArcaneGameMode)
+	{
+		return;
+	}
+
+	const TObjectPtr<UCharacterClassInfo> CharacterClassInfo = ArcaneGameMode->CharacterClassInfo;
+	for(TSubclassOf<UGameplayEffect> AbilityClass : CharacterClassInfo->CommonAbilities)
+	{
+		UGameplayEffect* x = AbilityClass.GetDefaultObject();
+		FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(AbilityClass.GetDefaultObject(), 1, INDEX_NONE, WorldContextObject);
+		ASC->GiveAbility(AbilitySpec);
+	}
 }

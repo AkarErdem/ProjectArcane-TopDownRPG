@@ -47,7 +47,9 @@ void UArcaneProjectileSpell::SpawnProjectile(const FVector& ProjectileTarget)
 	const FGameplayEffectSpecHandle SpecHandle = SourceASC->MakeOutgoingSpec(DamageEffectClass, GetAbilityLevel(), SourceASC->MakeEffectContext());
 
 	FArcaneGameplayTags GameplayTags = FArcaneGameplayTags::Get();
-	UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle, Meta_Tag_Damage, 50.f);
+	const float ScaledDamage = Damage.GetValueAtLevel(GetAbilityLevel());
+
+	UAbilitySystemBlueprintLibrary::AssignTagSetByCallerMagnitude(SpecHandle, Meta_Tag_Damage, ScaledDamage);
 	Projectile->DamageEffectSpecHandle = SpecHandle;
 
 	Projectile->FinishSpawning(SpawnTransform);

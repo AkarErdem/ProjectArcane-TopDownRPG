@@ -56,7 +56,14 @@ void AArcaneCharacterBase::UpdateFacingTarget_Implementation(FName TargetName, F
 	MotionWarpingComponent->AddOrUpdateWarpTargetFromLocation(TargetName, TargetLocation);
 }
 
-void AArcaneCharacterBase::InitAbilityActorInfo() { }
+UAnimMontage* AArcaneCharacterBase::GetHitReactMontage_Implementation()
+{
+	return HitReactMontage;
+}
+
+void AArcaneCharacterBase::InitAbilityActorInfo()
+{
+}
 
 void AArcaneCharacterBase::ApplyEffectToSelf(const TSubclassOf<UGameplayEffect> GameplayEffectClass, const float Level) const
 {

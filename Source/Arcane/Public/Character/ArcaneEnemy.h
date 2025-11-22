@@ -60,6 +60,12 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	TObjectPtr<UWidgetComponent> HealthBar;
 
+	UPROPERTY(BlueprintReadOnly, Category="Combat")
+	bool IsHitReacting;
+
+	UPROPERTY(BlueprintReadOnly, Category="Movement")
+	float BaseWalkSpeed = 250.f;
+
 	virtual void InitDefaultAttributes() const override;
 
 private:
@@ -67,5 +73,10 @@ private:
 	FDelegateHandle MaxHealthChangedHandle;
 
 	void InitializeEnemy();
+
 	void CleanupEnemy();
+
+	void OnHitReactTagChanged(const FGameplayTag Tag, int32 Count);
+
+	void UpdateWalkSpeed() const;
 };

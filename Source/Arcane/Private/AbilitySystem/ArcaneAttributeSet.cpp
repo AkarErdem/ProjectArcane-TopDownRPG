@@ -4,6 +4,7 @@
 #include "AbilitySystemBlueprintLibrary.h"
 #include "GameplayEffectExtension.h"
 #include "MathUtil.h"
+#include "Game/ArcaneGameplayTags.h"
 #include "GameFramework/Character.h"
 #include "Net/UnrealNetwork.h"
 
@@ -62,10 +63,17 @@ void UArcaneAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCall
 			const float NewHealth = GetHealth() - LocalIncomingDamage;
 			SetHealth(FMath::Clamp(NewHealth, 0, GetMaxHealth()));
 
-			const bool IsFatal = NewHealth <= 0;
-			if (IsFatal)
+			const bool IsFatal = NewHealth <= 0.f;
+			if (!IsFatal)
 			{
-
+				// Play hit reaction
+				FGameplayTagContainer TagContainer;
+				TagContainer.AddTag(Abilities_Tag_HitReact);
+				Target.ASC->TryActivateAbilitiesByTag(TagContainer);
+			}
+			else
+			{
+				// TODO: Kill the character
 			}
 		}
 	}
@@ -98,8 +106,7 @@ ON_REP_ATTRIBUTE(ManaRegeneration);
 
 #undef ON_REP_ATTRIBUTE
 
-void UArcaneAttributeSet::SetEffectProperties(const FGameplayEffectModCallbackData& Data, FEffectProperties& Source,
-                                              FEffectProperties& Target)
+void UArcaneAttributeSet::SetEffectProperties(const FGameplayEffectModCallbackData& Data, FEffectProperties& Source, FEffectProperties& Target)
 {
 	const FGameplayEffectContextHandle Context = Data.EffectSpec.GetContext();
 	UAbilitySystemComponent* SourceASC = Context.GetOriginalInstigatorAbilitySystemComponent();
@@ -115,7 +122,7 @@ void UArcaneAttributeSet::SetEffectProperties(const FGameplayEffectModCallbackDa
 	}
 
 	AController* SourceController = SourceASC->AbilityActorInfo->PlayerController.Get();
-	if(APawn* Pawn = Cast<APawn>(SourceAvatarActor); !SourceController)
+	if(const APawn* Pawn = Cast<APawn>(SourceAvatarActor); !SourceController)
 	{
 		if(!IsValid(Pawn))
 		{
@@ -145,13 +152,13 @@ void UArcaneAttributeSet::SetEffectProperties(const FGameplayEffectModCallbackDa
 	ACharacter* TargetCharacter = Cast<ACharacter>(TargetAvatarActor);
 	UAbilitySystemComponent* TargetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(TargetAvatarActor);
 
-	Source.ASC = SourceASC;
 	Source.AvatarActor = SourceAvatarActor;
 	Source.Controller = SourceController;
 	Source.Character = SourceCharacter;
+	Source.ASC = SourceASC;
 
-	Target.ASC = TargetASC;
 	Target.AvatarActor = TargetAvatarActor;
 	Target.Controller = TargetController;
 	Target.Character = TargetCharacter;
+	Target.ASC = TargetASC;
 }

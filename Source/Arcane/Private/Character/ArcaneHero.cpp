@@ -2,6 +2,7 @@
 
 #include "Character/ArcaneHero.h"
 #include "AbilitySystem/ArcaneAbilitySystemComponent.h"
+#include "AbilitySystem/ArcaneAbilitySystemLibrary.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Player/ArcanePlayerController.h"
 #include "Player/ArcanePlayerState.h"
@@ -61,6 +62,8 @@ void AArcaneHero::InitAbilityActorInfo()
 
 	// Init Attributes
 	InitDefaultAttributes();
+
+	UArcaneAbilitySystemLibrary::GiveStartupAbilities(ArcanePlayerState, AbilitySystemComponent);
 
 	// Init HUD
 	// PlayerController only is not a nullptr if this is owned by this player

@@ -41,6 +41,9 @@ ADD_NATIVE_TAG(Inputs, Tag, 2, "");
 ADD_NATIVE_TAG(Inputs, Tag, 3, "");
 ADD_NATIVE_TAG(Inputs, Tag, 4, "");
 
+// Abilities
+ADD_NATIVE_TAG(Abilities, Tag, HitReact, "Tag granted when target reacting to hit.");
+
 #undef ADD_ATTRIBUTE_TAG
 
 FArcaneGameplayTags FArcaneGameplayTags::GameplayTags;
@@ -76,4 +79,6 @@ void FArcaneGameplayTags::Initialize()
 	 GameplayTags.ArcaneTagsContainer.AddTag(Inputs_Tag_4);
 
 	 GameplayTags.ArcaneTagsContainer.AddTag(Meta_Tag_Damage);
+
+	 GameplayTags.ArcaneTagsContainer.AddTag(Abilities_Tag_HitReact);
 }

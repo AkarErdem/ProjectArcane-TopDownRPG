@@ -6,6 +6,8 @@
 #include "AbilitySystem/ArcaneAttributeSet.h"
 #include "Arcane/Arcane.h"
 #include "Components/WidgetComponent.h"
+#include "Game/ArcaneGameplayTags.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "UI/Widget/ArcaneUserWidget.h"
 
 AArcaneEnemy::AArcaneEnemy()
@@ -37,14 +39,19 @@ void AArcaneEnemy::EndPlay(const EEndPlayReason::Type EndPlayReason)
 void AArcaneEnemy::InitDefaultAttributes() const
 {
 	Super::InitDefaultAttributes();
-
 	UArcaneAbilitySystemLibrary::InitializeDefaultAttributes(this, CharacterClass, Level, GetAbilitySystemComponent());
 }
 
 void AArcaneEnemy::InitializeEnemy()
 {
+	// GAS
 	InitAbilityActorInfo();
+	UArcaneAbilitySystemLibrary::GiveStartupAbilities(this, AbilitySystemComponent);
 
+	// Movement
+	UpdateWalkSpeed();
+
+	// UI
 	if (UArcaneUserWidget* ArcaneUserWidget = Cast<UArcaneUserWidget>(HealthBar->GetUserWidgetObject()))
 	{
 		ArcaneUserWidget->SetWidgetController(this);
@@ -58,11 +65,13 @@ void AArcaneEnemy::InitializeEnemy()
 				OnHealthChanged.Broadcast(Data.NewValue);
 			});
 
-		 MaxHealthChangedHandle =AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(ArcaneAttributeSet->GetMaxHealthAttribute()).AddLambda(
+		 MaxHealthChangedHandle = AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(ArcaneAttributeSet->GetMaxHealthAttribute()).AddLambda(
 			[this](const FOnAttributeChangeData& Data)
 			{
 				OnMaxHealthChanged.Broadcast(Data.NewValue);
 			});
+
+		AbilitySystemComponent->RegisterGameplayTagEvent(Abilities_Tag_HitReact, EGameplayTagEventType::NewOrRemoved).AddUObject(this, &AArcaneEnemy::OnHitReactTagChanged);
 
 		OnHealthChanged.Broadcast(ArcaneAttributeSet->GetHealth());
 		OnMaxHealthChanged.Broadcast(ArcaneAttributeSet->GetMaxHealth());
@@ -84,6 +93,31 @@ void AArcaneEnemy::CleanupEnemy()
 			MaxHealthChangedHandle.Reset();
 		}
 	}
+}
+
+void AArcaneEnemy::OnHitReactTagChanged(const FGameplayTag Tag, int32 Count)
+{
+	if (Count > 0 or Count < 0)
+	{
+		return;
+	}
+
+	IsHitReacting = Count > 0;
+	UpdateWalkSpeed();
+
+	if (IsHitReacting)
+	{
+		// TODO: Play hit react animation
+	}
+	else
+	{
+		// TODO: Stop hit react animation
+	}
+}
+
+void AArcaneEnemy::UpdateWalkSpeed() const
+{
+	GetCharacterMovement()->MaxWalkSpeed = IsHitReacting ? 0.f : BaseWalkSpeed;
 }
 
 void AArcaneEnemy::InitAbilityActorInfo()

@@ -15,5 +15,6 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category="Input")
 	FGameplayTag StartupInputTag;
 
-	virtual void NotifyAbilityTaskWaitingOnAvatar(UAbilityTask* AbilityTask) override;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Damage")
+	FScalableFloat Damage;
 };
